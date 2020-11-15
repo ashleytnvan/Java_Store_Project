@@ -1,6 +1,7 @@
 package milestone4;
 
 import java.util.HashMap;
+import java.util.*;
 
 public class ShoppingCart {
     private HashMap<Item,Integer> shoppingCart;
@@ -15,8 +16,8 @@ public class ShoppingCart {
 
     public void listItems(){
         for (Map.Entry me : shoppingCart.entrySet() ){
-            System.out.println("Item = " + entry.getKey() +
-                    ", Quantity = " + entry.getValue());
+            System.out.println("Item = " + me.getKey() +
+                    ", Quantity = " + me.getValue());
         }
     }
 
