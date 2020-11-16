@@ -3,10 +3,14 @@ package milestone4;
 public class Item {
     private String item_name;
     private String picture;
-    private int price;
-    private int discounted_price;
+    private double price;
+    private double discounted_price;
 
-    public Item(String item_name, String picture, int price, int discounted_price){
+    public Item(String item_name, String picture, double price, double discounted_price){
+        this.item_name = item_name;
+        this.picture = picture;
+        this.price = price;
+        this.discounted_price = discounted_price;
 
     }
 
@@ -14,7 +18,7 @@ public class Item {
         return this;
     }
 
-    public String ItemName(){
+    public String getItemName(){
         return item_name;
     }
 
@@ -22,11 +26,11 @@ public class Item {
         return picture;
     }
 
-    public int getDiscount(){
+    public double getDiscount(){
         return discounted_price;
     }
 
-    public int getPrice(){
+    public double getPrice(){
         return price;
     }
 
