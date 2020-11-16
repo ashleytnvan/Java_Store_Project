@@ -26,29 +26,31 @@ public class ShoppingCart {
         tax_rate = 0.0725;
         label = new JLabel("Shopping Cart");
         cancel = new JButton("Cancel"); //takes back to store
-        String header_title = "Items                                ";
-        header_title += "Quantity                             ";
+        cancel.addActionListener(event -> {
+
+        });
+        String header_title = "      Items                                   ";
+        header_title += "Quantity                         ";
         header_title += "Cost                                 ";
         header = new JLabel(header_title);
         itemsPanel = new JPanel();
 
         double totalCost = calculateTotalCost();
-        String footer_title1 = String.format("Total cost: $%.2f", totalCost );
+        String footer_title1 = String.format("  Total cost: $%.2f", totalCost );
         double tax_due = totalCost * tax_rate;
-        String footer_title2 = String.format("Tax Due: $%.2f", tax_due);
+        String footer_title2 = String.format("  Tax Due: $%.2f", tax_due);
         totalCost += tax_due;
-        String footer_title3 = String.format("Total Due: $%.2f", totalCost);
+        String footer_title3 = String.format("  Total Due: $%.2f", totalCost);
         footer1 = new JLabel( footer_title1 );
         footer2 = new JLabel( footer_title2 );
         footer3 = new JLabel( footer_title3 );
 
         buy = new JButton("Buy"); //takes to checkout.
+        buy.addActionListener(event -> {
 
-
-        //itemsPanel.add();
-        itemsPanel.setPreferredSize(new Dimension(375,375));
+        });
+        itemsPanel.setPreferredSize(new Dimension(450,375));
         addItems();
-        //itemsPanel.setLayout(new GridLayout(5,4));
         itemsScroll = new JScrollPane(itemsPanel);
 
         frame = new JFrame();
@@ -74,7 +76,7 @@ public class ShoppingCart {
         c.gridwidth = 2;
         c.weightx=1.0;
         c.weighty = 1.0;
-        c.ipadx = 400;
+        c.ipadx = 475;
         c.ipady = 375;
         frame.add(itemsScroll, c);
         c.gridy = 3;
@@ -153,18 +155,19 @@ public class ShoppingCart {
             JLabel item_label = new JLabel("item_name");
             d.gridx = 0;
             itemsPanel.add(item_label,d);
-
             JButton decrease = new JButton("-");
 
             d.gridx = 1;
             itemsPanel.add(decrease,d);
+            int quantity = 3;
+
             d.gridx = 2;
 
-            int quantity = 3;
             String quantity_text = String.format("%d",quantity);
             JLabel quantity_label = new JLabel(quantity_text);
 
             itemsPanel.add(quantity_label,d);
+
             JButton increase = new JButton("+");
             d.gridx = 3;
             itemsPanel.add(increase,d);
@@ -177,6 +180,27 @@ public class ShoppingCart {
             JButton remove = new JButton("Remove");
             d.gridx = 5;
             itemsPanel.add(remove,d);
+
+
+            decrease.addActionListener(event -> {
+                quantity_label.setText( String.format("%d",quantity-1));
+                itemsPanel.revalidate();
+                itemsPanel.repaint();
+            });
+            increase.addActionListener(event -> {
+                quantity_label.setText( String.format("%d",quantity+1));
+                itemsPanel.revalidate();
+                itemsPanel.repaint();
+            });
+            int index = i;
+            remove.addActionListener(event -> {
+                for(int j =0; j < 6; j++ ){
+                    itemsPanel.remove(0);
+                }
+                itemsPanel.revalidate();
+                itemsPanel.repaint();
+            });
+
         }
     }
 }
