@@ -22,6 +22,9 @@ public class Item extends JPanel {
         this.discounted_price = discounted_price;
 
         pictureLabel = new JLabel();
+        updatePicture();
+        add(pictureLabel, BorderLayout.CENTER);
+        /*
         nameLabel = new JLabel(getItemName());
 
         float total = (float)getPrice();
@@ -35,12 +38,11 @@ public class Item extends JPanel {
         String s2 = Float.toString(total2);
         discountLabel.setText(s2);
 
-        updatePicture();
         add(nameLabel, BorderLayout.CENTER);
-        add(pictureLabel, BorderLayout.CENTER);
+
         add(costLabel, BorderLayout.CENTER);
         add(discountLabel, BorderLayout.CENTER);
-
+        */
     }
 
     protected void updatePicture() {
@@ -55,6 +57,7 @@ public class Item extends JPanel {
         } else {
             pictureLabel.setText(null);
         }
+        pictureLabel.setPreferredSize(new Dimension(225,225));
     }
 
     protected static ImageIcon createImageIcon(String path) {
@@ -89,6 +92,13 @@ public class Item extends JPanel {
 
     public boolean hasDiscount(){
         return (discounted_price != 0);
+    }
+
+    public boolean hasPicture(){
+        if (picture != null)
+            return true;
+        else
+            return false;
     }
 
     public void setDiscount(int discounted_price){

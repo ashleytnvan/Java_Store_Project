@@ -50,10 +50,10 @@ public class ShoppingCart {
         buy.addActionListener(event -> {
 
         });
-        itemsPanel.setPreferredSize(new Dimension(450,375));
+        //itemsPanel.setPreferredSize(new Dimension(725,375));
         addItems();
         itemsScroll = new JScrollPane(itemsPanel);
-
+        //itemsScroll.setPreferredSize(new Dimension(725,375));
         frame = new JFrame();
         frame.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -77,7 +77,7 @@ public class ShoppingCart {
         c.gridwidth = 2;
         c.weightx=1.0;
         c.weighty = 1.0;
-        c.ipadx = 475;
+        c.ipadx = 725;
         c.ipady = 375;
         frame.add(itemsScroll, c);
         c.gridy = 3;
@@ -95,7 +95,7 @@ public class ShoppingCart {
         c.ipady = 25;
         frame.add(buy,c);
 
-        frame.setPreferredSize(new Dimension(500,500 ));
+        frame.setPreferredSize(new Dimension(750,500 ));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -156,7 +156,7 @@ public class ShoppingCart {
         GridBagConstraints d = new GridBagConstraints();
         d.ipady=0;
         d.ipadx=0;
-        d.weighty = 0.1;
+        d.weighty = 0;
         d.weightx = 0.1;
 
         //add 5-10 items into hashMap
@@ -164,6 +164,22 @@ public class ShoppingCart {
             shoppingCart.putIfAbsent(new Item("item#"+i,
                     "picture#"+i, Math.random()*5,0 ),i);
         }
+
+        //add items with images into the cart
+        Item grape = new Item("grape","grape",1.99,1.49);
+        Item banana = new Item("banana","banana",1.50,1.50);
+        Item kiwi = new Item("kiwi","kiwi",2.49,1.99);
+        Item lemon = new Item("lemon","lemon",1.89,1.50);
+        Item orange = new Item("orange","orange",2.49,1.99);
+        Item strawberry = new Item("strawberry","strawberry",1.75,1.50);
+
+        shoppingCart.putIfAbsent(grape,2);
+        shoppingCart.putIfAbsent(banana,3);
+        shoppingCart.putIfAbsent(kiwi,0);
+        shoppingCart.putIfAbsent(lemon,1);
+        shoppingCart.putIfAbsent(orange,1);
+        shoppingCart.putIfAbsent(strawberry,1);
+
         updateTotal();
         //use the hashMap to set values
         int i = 0;
@@ -174,6 +190,7 @@ public class ShoppingCart {
             JLabel item_label = new JLabel(temp.getItemName());
             d.gridx = 0;
             itemsPanel.add(item_label,d);
+
 
             JButton decrease = new JButton("-");
             d.gridx = 1;
@@ -195,6 +212,11 @@ public class ShoppingCart {
             JButton remove = new JButton("Remove");
             d.gridx = 5;
             itemsPanel.add(remove,d);
+
+            temp.setOpaque(true);
+            d.gridx = 6;
+            if (temp.hasPicture())
+                itemsPanel.add(temp, d);
 
             decrease.addActionListener(event -> {
                 if (e.getValue() > 0) {
@@ -224,6 +246,8 @@ public class ShoppingCart {
                 itemsPanel.remove(quantity_label);
                 itemsPanel.remove(increase);
                 itemsPanel.remove(cost_label);
+                if (temp.hasPicture())
+                    itemsPanel.remove(temp);
                 itemsPanel.remove(remove);
                 shoppingCart.remove(e.getKey());
                 updateTotal();
@@ -243,5 +267,13 @@ public class ShoppingCart {
         footer1.setText( footer_title1 );
         footer2.setText( footer_title2 );
         footer3.setText( footer_title3 );
+
+        int picCount = 0;
+        for ( Map.Entry<Item, Integer> e : shoppingCart.entrySet() ) {
+            if (e.getKey().hasPicture())
+                picCount++;
+        }
+
+        itemsPanel.setPreferredSize(new Dimension(725, ((picCount) * 100)));
     }
 }
