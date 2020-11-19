@@ -35,7 +35,9 @@ public class ShoppingApp {
         addACart = new JButton("Add a new cart");
         selectACart = new JButton("Select a cart");
         addACart.addActionListener(event -> {
-            addCart();
+            //create new ShoppingCart and add it to carts ArrayList
+        	ShoppingCart cart = new ShoppingCart();
+        	addCart(cart);
         });
         selectACart.addActionListener(event -> {
             chooseCart();
@@ -97,8 +99,8 @@ public class ShoppingApp {
         frame.repaint();
     }
 
-    public void addCart(){
-        carts.add(new ShoppingCart());
+    public void addCart(ShoppingCart s){
+        carts.add(s);
         cart_index = size;
         size++;
     }
