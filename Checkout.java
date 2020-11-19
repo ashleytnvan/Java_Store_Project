@@ -86,9 +86,10 @@ public class Checkout {
             cc_type = cTypeField.getText();
             cc_exp = cExpField.getText();
             coupon = couponField.getText(); // pass into invoice
+            createInvoice();
         });
-        cancelButton.addActionListener(event -> { //go back to shoppingCart or close window.
-
+        cancelButton.addActionListener(event -> { //Close window.
+            cancel();
         });
 
         c.gridwidth = GridBagConstraints.REMAINDER; //last
@@ -114,11 +115,11 @@ public class Checkout {
     }
 
     public void cancel(){
-
+    	System.exit(0);
     }
 
     public void createInvoice(){
-
+    	Invoice i = new Invoice();
     }
 
     private void addLabelTextRows(JLabel[] labels,
