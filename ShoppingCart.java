@@ -28,7 +28,7 @@ public class ShoppingCart {
         label = new JLabel("Shopping Cart");
         cancel = new JButton("Cancel"); //takes back to store
         cancel.addActionListener(event -> {
-
+            cancel();
         });
         String header_title = "      Items                                   ";
         header_title += "Quantity                         ";
@@ -48,7 +48,7 @@ public class ShoppingCart {
 
         buy = new JButton("Buy"); //takes to checkout.
         buy.addActionListener(event -> {
-
+            checkout();
         });
         //itemsPanel.setPreferredSize(new Dimension(725,375));
         addItems();
@@ -102,7 +102,7 @@ public class ShoppingCart {
     }
 
     public void checkout(){
-
+        Checkout c = new Checkout();
     }
 
     public void listItems(){
@@ -136,7 +136,7 @@ public class ShoppingCart {
     }
 
     public void cancel(){
-
+        System.exit(0);
     }
 
     public double calculateTotalCost(){
