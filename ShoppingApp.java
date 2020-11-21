@@ -42,7 +42,10 @@ public class ShoppingApp {
         selectACart.addActionListener(event -> {
             chooseCart();
         });
-
+        exit.addActionListener(event -> {
+            System.out.println("Happen exit");
+            System.exit(0);
+        });
         cartsPanel = new JPanel();
         cartsPanel.setLayout(new GridLayout(2,1));
         cartsPanel.add(addACart);
@@ -68,10 +71,11 @@ public class ShoppingApp {
         JButton temp;
         for (int i=1; i <= size; i++){
             temp = new JButton("Cart " + i);
-            temp.setPreferredSize(new Dimension(100,50 ));
+            //temp.setPreferredSize(new Dimension(100,50 ));
             int finalI = i;
             temp.addActionListener(event -> {
                 cart_index = finalI -1;
+                carts.get(cart_index).showCart();
             });
             cartsPanel.add(temp);
         }
@@ -79,7 +83,6 @@ public class ShoppingApp {
             exit.removeActionListener( al );
         }
         exit.addActionListener(event -> {
-            System.out.println("exit clicked");
             frame.remove(cartsPane);
             cartsPanel.removeAll();
             cartsPanel.revalidate();
@@ -90,6 +93,7 @@ public class ShoppingApp {
             frame.add(cartsPanel, BorderLayout.CENTER);
             frame.revalidate();
             frame.repaint();
+            updateExit();
         });
         //cartsPanel.getComponent(0)
         cartsPane = new JScrollPane(cartsPanel);
@@ -105,11 +109,10 @@ public class ShoppingApp {
         size++;
     }
 
-    public void checkout(){
-
+    private void updateExit(){
+        exit.addActionListener(event -> {
+            System.exit(0);
+        });
     }
 
-    public void cancel(){
-
-    }
 }

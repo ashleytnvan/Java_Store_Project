@@ -1,20 +1,20 @@
 package milestone4;
 
 import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class StoreApp {
     private ArrayList<Item> items;
 
 
     public StoreApp(){
+
         items = new ArrayList<Item>();
     }
 
     public void startNew(){
-
-    }
-
-    public void chooseCart(){
 
     }
 
@@ -23,12 +23,12 @@ public class StoreApp {
     }
 
     public String listItems(){
-        String items = "";
+        String list_items = "";
         for(Item item :  items){
-            items += item.toString() + " ";
+            list_items += item.toString() + " ";
         }
-        items += "\n";
-        return items;
+        list_items += "\n";
+        return list_items;
     }
 
     public void addItem(Item item){

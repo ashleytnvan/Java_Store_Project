@@ -136,7 +136,169 @@ public class ShoppingCart {
     }
 
     public void cancel(){
-        System.exit(0);
+        frame.setVisible(false); //you can't see me!
+        frame.dispose();
+    }
+
+    public void showCart(){
+        label = new JLabel("Shopping Cart");
+        cancel = new JButton("Cancel"); //takes back to store
+        cancel.addActionListener(event -> {
+            cancel();
+        });
+        String header_title = "      Items                                   ";
+        header_title += "Quantity                         ";
+        header_title += "Cost                                 ";
+        header = new JLabel(header_title);
+        itemsPanel = new JPanel();
+
+        double totalCost = calculateTotalCost();
+        String footer_title1 = String.format("  Total cost: $%.2f", totalCost );
+        double tax_due = totalCost * tax_rate;
+        String footer_title2 = String.format("  Tax Due: $%.2f", tax_due);
+        totalCost += tax_due;
+        String footer_title3 = String.format("  Total Due: $%.2f", totalCost);
+        footer1 = new JLabel( footer_title1 );
+        footer2 = new JLabel( footer_title2 );
+        footer3 = new JLabel( footer_title3 );
+
+        buy = new JButton("Buy"); //takes to checkout.
+        buy.addActionListener(event -> {
+            checkout();
+        });
+        //itemsPanel.setPreferredSize(new Dimension(725,375));
+
+        itemsPanel.setLayout(new GridBagLayout());
+        GridBagConstraints d = new GridBagConstraints();
+        d.ipady=0;
+        d.ipadx=0;
+        d.weighty = 0;
+        d.weightx = 0.1;
+
+
+        updateTotal();
+        //use the hashMap to set values
+        int i = 0;
+        for ( Map.Entry<Item, Integer> e : shoppingCart.entrySet() ) {
+            d.gridy = i++;
+            Item temp = e.getKey();
+
+            JLabel item_label = new JLabel(temp.getItemName());
+            d.gridx = 0;
+            itemsPanel.add(item_label, d);
+
+
+            JButton decrease = new JButton("-");
+            d.gridx = 1;
+            itemsPanel.add(decrease, d);
+
+            JLabel quantity_label = new JLabel(String.format("%d", e.getValue()));
+            d.gridx = 2;
+            itemsPanel.add(quantity_label, d);
+
+            JButton increase = new JButton("+");
+            d.gridx = 3;
+            itemsPanel.add(increase, d);
+
+            double item_cost = temp.getPrice() * e.getValue();
+            JLabel cost_label = new JLabel(String.format("$%.2f", item_cost));
+            d.gridx = 4;
+            itemsPanel.add(cost_label, d);
+
+            JButton remove = new JButton("Remove");
+            d.gridx = 5;
+            itemsPanel.add(remove, d);
+
+            temp.setOpaque(true);
+            d.gridx = 6;
+            if (temp.hasPicture())
+                itemsPanel.add(temp, d);
+
+            decrease.addActionListener(event -> {
+                if (e.getValue() > 0) {
+                    e.setValue(e.getValue() - 1);
+                    quantity_label.setText(String.format("%d", e.getValue()));
+                    double item_cost2 = temp.getPrice() * e.getValue();
+                    cost_label.setText(String.format("$%.2f", item_cost2));
+                    updateTotal();
+                    itemsPanel.revalidate();
+                    itemsPanel.repaint();
+                }
+            });
+
+            increase.addActionListener(event -> {
+                e.setValue(e.getValue() + 1);
+                quantity_label.setText(String.format("%d", e.getValue()));
+                double item_cost2 = temp.getPrice() * e.getValue();
+                cost_label.setText(String.format("$%.2f", item_cost2));
+                updateTotal();
+                itemsPanel.revalidate();
+                itemsPanel.repaint();
+            });
+
+            remove.addActionListener(event -> {
+                itemsPanel.remove(item_label);
+                itemsPanel.remove(decrease);
+                itemsPanel.remove(quantity_label);
+                itemsPanel.remove(increase);
+                itemsPanel.remove(cost_label);
+                if (temp.hasPicture())
+                    itemsPanel.remove(temp);
+                itemsPanel.remove(remove);
+                shoppingCart.remove(e.getKey());
+                updateTotal();
+                itemsPanel.revalidate();
+                itemsPanel.repaint();
+            });
+        }
+
+        itemsScroll = new JScrollPane(itemsPanel);
+        //itemsScroll.setPreferredSize(new Dimension(725,375));
+        frame = new JFrame();
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.ipadx = 25;
+        frame.add(label, c);
+        c.gridx = 1;
+        c.gridy = 0;
+        frame.add(cancel, c);
+        c.gridx=0;
+        c.gridy=1;
+        c.gridwidth = 2;
+        c.ipady = 25;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.WEST;
+        frame.add(header,c);
+
+        c.gridx=0;
+        c.gridy=2;
+        c.gridwidth = 2;
+        c.weightx=1.0;
+        c.weighty = 1.0;
+        c.ipadx = 725;
+        c.ipady = 375;
+        frame.add(itemsScroll, c);
+        c.gridy = 3;
+        c.ipady = 75;
+        c.gridwidth = 1;
+        frame.add(footer1, c);
+        c.gridy = 4;
+        frame.add(footer2, c);
+        c.gridy = 5;
+        frame.add(footer3, c);
+        c.gridx=1;
+        c.gridy = 3;
+        c.gridheight = 3;
+        c.ipadx = 200;
+        c.ipady = 25;
+        frame.add(buy,c);
+
+        frame.setPreferredSize(new Dimension(750,500 ));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     public double calculateTotalCost(){
