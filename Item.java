@@ -78,8 +78,22 @@ public class Item extends JPanel {
         return item_name;
     }
 
-    public String getPicture(){
-        return picture;
+    public ImageIcon getPicture(){
+        String path = "images/" + getItemName() + ".gif";
+        java.net.URL imgURL = Item.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
+
+    public Dimension getPictureDimension(){
+        String path = "images/" + getItemName() + ".gif";
+        java.net.URL imgURL = Item.class.getResource(path);
+        ImageIcon image = new ImageIcon(imgURL);
+        return new Dimension(image.getIconWidth(), image.getIconHeight());
     }
 
     public double getDiscount(){

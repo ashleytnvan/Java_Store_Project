@@ -2,6 +2,7 @@ package milestone4;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Map;
 import javax.swing.*;
 
 public class StoreApp {
@@ -11,14 +12,31 @@ public class StoreApp {
     JFrame frame = new JFrame("Store");
     JPanel base = new JPanel();
     JPanel header = new JPanel();
-    JScrollPane itemDisplay = new JScrollPane();
+    JPanel itemDisplay;
+
+    JScrollPane itemScroll;
 
     JButton exitButton = new JButton("Cancel");
-    JButton cartButton = new JButton(new ImageIcon("/images/shopping_cart.png"));
+    java.net.URL imgURL = Item.class.getResource("images/shopping_cart.png");
+    JButton cartButton = new JButton(new ImageIcon(imgURL));
 
     public StoreApp(ShoppingCart cart){
         // initialize data structures
         items = new ArrayList<Item>();
+        Item grape = new Item("grape","grape",1.99,1.49);
+        Item banana = new Item("banana","banana",1.50,1.50);
+        Item kiwi = new Item("kiwi","kiwi",2.49,1.99);
+        Item lemon = new Item("lemon","lemon",1.89,1.50);
+        Item orange = new Item("orange","orange",2.49,1.99);
+        Item strawberry = new Item("strawberry","strawberry",1.75,1.50);
+
+        items.add(grape);
+        items.add(banana);
+        items.add(kiwi);
+        items.add(lemon);
+        items.add(orange);
+        items.add(strawberry);
+
         this.cart = cart;
 
         // base panel
@@ -33,11 +51,31 @@ public class StoreApp {
         base.add(header, BorderLayout.NORTH);
 
         // item display
-        itemDisplay.setLayout(new ScrollPaneLayout());
+        itemDisplay = new JPanel();
+        itemDisplay.setLayout(new GridLayout((int)Math.round(Math.sqrt(items.size())),
+                (int)Math.round(Math.sqrt(items.size()))));
         for(Item i: items) {
-            itemDisplay.add(i);
+            i.setOpaque(true);
+            JButton custom = new JButton(i.getPicture());
+            JLabel label = new JLabel(i.getItemName());
+            label.setVerticalAlignment(JLabel.BOTTOM);
+            label.setAlignmentY(JLabel.BOTTOM_ALIGNMENT);
+            label.setHorizontalAlignment(JLabel.RIGHT);
+            label.setFont(new Font("Verdana", Font.PLAIN, 24));
+            //label.setBorder(BorderFactory.createLineBorder(Color.black));
+            custom.add(label);
+            custom.setPreferredSize(i.getPictureDimension());
+            //custom.setText(i.getItemName());
+            itemDisplay.add( custom );
+            custom.addActionListener(event->{
+                System.out.println("Added " + i.getItemName() + " to your cart.");
+            });
         }
-        base.add(itemDisplay, BorderLayout.CENTER);
+
+
+        itemScroll = new JScrollPane(itemDisplay);
+        itemScroll.setPreferredSize(new Dimension(700,450) );
+        base.add(itemScroll, BorderLayout.CENTER);
 
         // frame visibility
         frame.add(base);
