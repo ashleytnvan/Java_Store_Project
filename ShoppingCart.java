@@ -25,6 +25,7 @@ public class ShoppingCart {
     public ShoppingCart(){
         shoppingCart = new HashMap<Item,Integer>();
         tax_rate = 0.0725;
+
         label = new JLabel("Shopping Cart");
         cancel = new JButton("Cancel"); //takes back to store
         cancel.addActionListener(event -> {
@@ -50,55 +51,6 @@ public class ShoppingCart {
         buy.addActionListener(event -> {
             checkout();
         });
-        //itemsPanel.setPreferredSize(new Dimension(725,375));
-        addItems();
-        itemsScroll = new JScrollPane(itemsPanel);
-        //itemsScroll.setPreferredSize(new Dimension(725,375));
-        frame = new JFrame();
-        frame.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.ipadx = 25;
-        frame.add(label, c);
-        c.gridx = 1;
-        c.gridy = 0;
-        frame.add(cancel, c);
-        c.gridx=0;
-        c.gridy=1;
-        c.gridwidth = 2;
-        c.ipady = 25;
-        c.weightx = 1.0;
-        c.anchor = GridBagConstraints.WEST;
-        frame.add(header,c);
-
-        c.gridx=0;
-        c.gridy=2;
-        c.gridwidth = 2;
-        c.weightx=1.0;
-        c.weighty = 1.0;
-        c.ipadx = 725;
-        c.ipady = 375;
-        frame.add(itemsScroll, c);
-        c.gridy = 3;
-        c.ipady = 75;
-        c.gridwidth = 1;
-        frame.add(footer1, c);
-        c.gridy = 4;
-        frame.add(footer2, c);
-        c.gridy = 5;
-        frame.add(footer3, c);
-        c.gridx=1;
-        c.gridy = 3;
-        c.gridheight = 3;
-        c.ipadx = 200;
-        c.ipady = 25;
-        frame.add(buy,c);
-
-        frame.setPreferredSize(new Dimension(750,500 ));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 
     public void checkout(){
@@ -117,6 +69,7 @@ public class ShoppingCart {
             shoppingCart.computeIfPresent(item, (k,v)->v+1);
         else
             shoppingCart.put(item,1);
+
     }
 
     public void removeItem(Item item){
@@ -166,94 +119,10 @@ public class ShoppingCart {
         buy.addActionListener(event -> {
             checkout();
         });
-        //itemsPanel.setPreferredSize(new Dimension(725,375));
 
-        itemsPanel.setLayout(new GridBagLayout());
-        GridBagConstraints d = new GridBagConstraints();
-        d.ipady=0;
-        d.ipadx=0;
-        d.weighty = 0;
-        d.weightx = 0.1;
-
-
-        updateTotal();
-        //use the hashMap to set values
-        int i = 0;
-        for ( Map.Entry<Item, Integer> e : shoppingCart.entrySet() ) {
-            d.gridy = i++;
-            Item temp = e.getKey();
-
-            JLabel item_label = new JLabel(temp.getItemName());
-            d.gridx = 0;
-            itemsPanel.add(item_label, d);
-
-
-            JButton decrease = new JButton("-");
-            d.gridx = 1;
-            itemsPanel.add(decrease, d);
-
-            JLabel quantity_label = new JLabel(String.format("%d", e.getValue()));
-            d.gridx = 2;
-            itemsPanel.add(quantity_label, d);
-
-            JButton increase = new JButton("+");
-            d.gridx = 3;
-            itemsPanel.add(increase, d);
-
-            double item_cost = temp.getPrice() * e.getValue();
-            JLabel cost_label = new JLabel(String.format("$%.2f", item_cost));
-            d.gridx = 4;
-            itemsPanel.add(cost_label, d);
-
-            JButton remove = new JButton("Remove");
-            d.gridx = 5;
-            itemsPanel.add(remove, d);
-
-            temp.setOpaque(true);
-            d.gridx = 6;
-            if (temp.hasPicture())
-                itemsPanel.add(temp, d);
-
-            decrease.addActionListener(event -> {
-                if (e.getValue() > 0) {
-                    e.setValue(e.getValue() - 1);
-                    quantity_label.setText(String.format("%d", e.getValue()));
-                    double item_cost2 = temp.getPrice() * e.getValue();
-                    cost_label.setText(String.format("$%.2f", item_cost2));
-                    updateTotal();
-                    itemsPanel.revalidate();
-                    itemsPanel.repaint();
-                }
-            });
-
-            increase.addActionListener(event -> {
-                e.setValue(e.getValue() + 1);
-                quantity_label.setText(String.format("%d", e.getValue()));
-                double item_cost2 = temp.getPrice() * e.getValue();
-                cost_label.setText(String.format("$%.2f", item_cost2));
-                updateTotal();
-                itemsPanel.revalidate();
-                itemsPanel.repaint();
-            });
-
-            remove.addActionListener(event -> {
-                itemsPanel.remove(item_label);
-                itemsPanel.remove(decrease);
-                itemsPanel.remove(quantity_label);
-                itemsPanel.remove(increase);
-                itemsPanel.remove(cost_label);
-                if (temp.hasPicture())
-                    itemsPanel.remove(temp);
-                itemsPanel.remove(remove);
-                shoppingCart.remove(e.getKey());
-                updateTotal();
-                itemsPanel.revalidate();
-                itemsPanel.repaint();
-            });
-        }
+        showItems();
 
         itemsScroll = new JScrollPane(itemsPanel);
-        //itemsScroll.setPreferredSize(new Dimension(725,375));
         frame = new JFrame();
         frame.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -312,35 +181,17 @@ public class ShoppingCart {
         return totalCost;
     }
 
-    public void addItems(){
+    public void showItems(){
         //go through shopping cart.
+        itemsPanel.removeAll();
+        itemsPanel.validate();
+        itemsPanel.repaint();
         itemsPanel.setLayout(new GridBagLayout());
         GridBagConstraints d = new GridBagConstraints();
         d.ipady=0;
         d.ipadx=0;
         d.weighty = 0;
         d.weightx = 0.1;
-
-        //add 5-10 items into hashMap
-        for(int i=0; i <= 5; i++) {
-            shoppingCart.putIfAbsent(new Item("item#"+i,
-                    "picture#"+i, Math.random()*5,0 ),i);
-        }
-
-        //add items with images into the cart
-        Item grape = new Item("grape","grape",1.99,1.49);
-        Item banana = new Item("banana","banana",1.50,1.50);
-        Item kiwi = new Item("kiwi","kiwi",2.49,1.99);
-        Item lemon = new Item("lemon","lemon",1.89,1.50);
-        Item orange = new Item("orange","orange",2.49,1.99);
-        Item strawberry = new Item("strawberry","strawberry",1.75,1.50);
-
-        shoppingCart.putIfAbsent(grape,2);
-        shoppingCart.putIfAbsent(banana,3);
-        shoppingCart.putIfAbsent(kiwi,0);
-        shoppingCart.putIfAbsent(lemon,1);
-        shoppingCart.putIfAbsent(orange,1);
-        shoppingCart.putIfAbsent(strawberry,1);
 
         updateTotal();
         //use the hashMap to set values
@@ -413,10 +264,30 @@ public class ShoppingCart {
                 itemsPanel.remove(remove);
                 shoppingCart.remove(e.getKey());
                 updateTotal();
+
+                Dimension itemsDim = new Dimension(700, 0);
+
+                for ( Map.Entry<Item, Integer> f : shoppingCart.entrySet() ) {
+                    if (f.getKey().hasPicture())
+                        itemsDim.height += f.getKey().getPictureDimension().height;
+                }
+
+                itemsPanel.setPreferredSize(itemsDim);
                 itemsPanel.revalidate();
                 itemsPanel.repaint();
             });
         }
+
+        Dimension itemsDim = new Dimension(700, 0);
+
+        for ( Map.Entry<Item, Integer> e : shoppingCart.entrySet() ) {
+            if (e.getKey().hasPicture())
+                itemsDim.height += e.getKey().getPictureDimension().height;
+        }
+
+        itemsPanel.setPreferredSize(itemsDim);
+        itemsPanel.revalidate();
+        itemsPanel.repaint();
     }
 
     public void updateTotal(){
@@ -430,12 +301,5 @@ public class ShoppingCart {
         footer2.setText( footer_title2 );
         footer3.setText( footer_title3 );
 
-        int picCount = 0;
-        for ( Map.Entry<Item, Integer> e : shoppingCart.entrySet() ) {
-            if (e.getKey().hasPicture())
-                picCount++;
-        }
-
-        itemsPanel.setPreferredSize(new Dimension(725, ((picCount) * 100)));
     }
 }

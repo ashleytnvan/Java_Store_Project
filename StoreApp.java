@@ -8,21 +8,23 @@ import javax.swing.*;
 public class StoreApp {
     private ArrayList<Item> items;
     private ShoppingCart cart;
+    private JFrame frame;
+    private JPanel base;
+    private JPanel header;
+    private JPanel itemDisplay;
+    private JScrollPane itemScroll;
 
-    JFrame frame = new JFrame("Store");
-    JPanel base = new JPanel();
-    JPanel header = new JPanel();
-    JPanel itemDisplay;
-
-    JScrollPane itemScroll;
-
-    JButton exitButton = new JButton("Cancel");
-    java.net.URL imgURL = Item.class.getResource("images/shopping_cart.png");
-    JButton cartButton = new JButton(new ImageIcon(imgURL));
+    private JButton exitButton;
+    private java.net.URL imgURL;
+    private JButton cartButton;
 
     public StoreApp(ShoppingCart cart){
-        // initialize data structures
         items = new ArrayList<Item>();
+        this.cart = cart;
+        createInventory();
+    }
+
+    public void createInventory() {
         Item grape = new Item("grape","grape",1.99,1.49);
         Item banana = new Item("banana","banana",1.50,1.50);
         Item kiwi = new Item("kiwi","kiwi",2.49,1.99);
@@ -36,16 +38,22 @@ public class StoreApp {
         items.add(lemon);
         items.add(orange);
         items.add(strawberry);
+    }
 
-        this.cart = cart;
-
-        // base panel
+    public void showStore(){
+        base = new JPanel();
         base.setLayout(new BorderLayout()); // use base border layout
-
-        // header panel
+        header = new JPanel();
         header.setLayout(new FlowLayout(FlowLayout.RIGHT)); // right justified
-        cartButton.addActionListener(event -> cart.showCart());
-        exitButton.addActionListener(event -> exit());
+        exitButton = new JButton("Cancel");
+        imgURL = Item.class.getResource("images/shopping_cart.png");
+        cartButton = new JButton(new ImageIcon(imgURL));
+        cartButton.addActionListener(event -> {
+            cart.showCart();
+        });
+        exitButton.addActionListener(event -> {
+            exit();
+        });
         header.add(cartButton);
         header.add(exitButton);
         base.add(header, BorderLayout.NORTH);
@@ -68,7 +76,8 @@ public class StoreApp {
             //custom.setText(i.getItemName());
             itemDisplay.add( custom );
             custom.addActionListener(event->{
-                System.out.println("Added " + i.getItemName() + " to your cart.");
+                cart.addItem(i);
+                cart.showItems();
             });
         }
 
@@ -76,17 +85,13 @@ public class StoreApp {
         itemScroll = new JScrollPane(itemDisplay);
         itemScroll.setPreferredSize(new Dimension(700,450) );
         base.add(itemScroll, BorderLayout.CENTER);
-
+        frame = new JFrame("Store");
         // frame visibility
         frame.add(base);
         frame.setSize(500, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-    }
-
-    public void startNew() {
-
     }
 
     public void exit(){

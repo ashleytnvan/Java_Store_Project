@@ -38,12 +38,13 @@ public class ShoppingApp {
             //create new ShoppingCart and add it to carts ArrayList
         	ShoppingCart cart = new ShoppingCart();
         	addCart(cart);
+        	StoreApp storeApp = new StoreApp(cart);
+        	storeApp.showStore();
         });
         selectACart.addActionListener(event -> {
             chooseCart();
         });
         exit.addActionListener(event -> {
-            System.out.println("Happen exit");
             System.exit(0);
         });
         cartsPanel = new JPanel();
@@ -75,7 +76,8 @@ public class ShoppingApp {
             int finalI = i;
             temp.addActionListener(event -> {
                 cart_index = finalI -1;
-                carts.get(cart_index).showCart();
+                StoreApp storeApp = new StoreApp(carts.get(cart_index));
+                storeApp.showStore();
             });
             cartsPanel.add(temp);
         }
