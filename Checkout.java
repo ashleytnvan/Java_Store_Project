@@ -8,24 +8,25 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class Checkout {
-    public String name;
-    public String city;
-    public String state;
-    public String zip;
-    public String phone;
-    public String email;
-    public String card;
-    public String cc_type;
-    public String cc_exp;
-    public String coupon;
+    private String name;
+    private String city;
+    private String state;
+    private String zip;
+    private String phone;
+    private String email;
+    private String card;
+    private String cc_type;
+    private String cc_exp;
+    private String coupon;
 
-    JButton checkoutButton;
+    private JButton checkoutButton;
+    private JButton cancelButton;
+    private Iterator cartIterator;
 
-    JButton cancelButton;
+    private JFrame frame;
 
-    public Checkout(){
-
-
+    public Checkout(Iterator cartIterator){
+        this.cartIterator = cartIterator;
         JTextField nameField = new JTextField(10);
         JTextField cityField = new JTextField(10);
         JTextField stateField = new JTextField(10);
@@ -86,7 +87,7 @@ public class Checkout {
             cc_type = cTypeField.getText();
             cc_exp = cExpField.getText();
             coupon = couponField.getText(); // pass into invoice
-            createInvoice();
+            createInvoice(cartIterator);
         });
         cancelButton.addActionListener(event -> { //Close window.
             cancel();
@@ -102,7 +103,7 @@ public class Checkout {
                 BorderFactory.createTitledBorder("Billing Information"),
                 BorderFactory.createEmptyBorder(5,5,5,5)));
 
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.add(infoPane);
         frame.setPreferredSize(new Dimension(300,300 ));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,11 +116,12 @@ public class Checkout {
     }
 
     public void cancel(){
-    	System.exit(0);
+        frame.setVisible(false); //you can't see me!
+        frame.dispose();
     }
 
-    public void createInvoice(){
-    	Invoice i = new Invoice();
+    public void createInvoice(Iterator cartIterator){
+        Invoice i = new Invoice( cartIterator );
     }
 
     private void addLabelTextRows(JLabel[] labels,

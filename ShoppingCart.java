@@ -54,7 +54,8 @@ public class ShoppingCart {
     }
 
     public void checkout(){
-        Checkout c = new Checkout();
+        Iterator cartIterator = checkoutCart();
+        Checkout c = new Checkout(cartIterator);
     }
 
     public void listItems(){
@@ -301,5 +302,10 @@ public class ShoppingCart {
         footer2.setText( footer_title2 );
         footer3.setText( footer_title3 );
 
+    }
+
+    public Iterator checkoutCart(){
+        Iterator cartIterator = shoppingCart.entrySet().iterator();
+        return cartIterator;
     }
 }

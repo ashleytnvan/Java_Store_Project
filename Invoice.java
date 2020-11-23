@@ -13,12 +13,14 @@ public class Invoice {
     private JTextArea invoiceArea;
     private JFrame frame;
 
-    public Invoice(){//ArrayList<Item> items){
+    private Iterator cartIterator;
+
+    public Invoice(Iterator cartIterator ){
         tax_rate = 0.0725;
-        itemCartCost = 3; //
-        this.items = items;
+        this.cartIterator = cartIterator;
+        itemCartCost = 0;
         invoiceArea = new JTextArea(20, 40);
-        invoiceArea.setText(createInvoice());
+        invoiceArea.setText(createInvoice(cartIterator));
         frame = new JFrame();
         frame.add(new JScrollPane(invoiceArea),
                 BorderLayout.CENTER);
@@ -27,13 +29,16 @@ public class Invoice {
         frame.setVisible(true);
     }
 
-    public String createInvoice(){
+    private String createInvoice(Iterator cartIterator){
         String r = "               Invoice\n  ";
         r += "Thank you for shopping with us\n\n";
         r += "Items          Quantity          Cost\n";
-        for(int i=1; i <= 5; i++){
-            // String.format("%-15.s%-15d $%.2f\n, item_name, item_quantity, item_cost);
-            r += "item #" + i +  "        " + i + "              " + "$1.00\n";
+        itemCartCost = 0;
+        while(cartIterator.hasNext()){
+            Map.Entry e = (Map.Entry)cartIterator.next();
+            Item temp = (Item)e.getKey();
+            itemCartCost += temp.getPrice() * (int)e.getValue();
+            r += String.format("%-15s %-15d $%.2f\n", temp.getItemName(), (int)e.getValue(), temp.getPrice());
         }
         r += "Total Cost: " + String.format("$%.2f\n",itemCartCost);
         double temp = itemCartCost * tax_rate;
@@ -41,21 +46,5 @@ public class Invoice {
         temp += itemCartCost;
         r += "Total Due: " + String.format("$%.2f\n", temp);
         return r;
-    }
-
-    public Item getItem(){
-        return null;
-    }
-
-    public int getQuantity(){
-        return 0;
-    }
-
-    public int getItemCost(){
-        return 0;
-    }
-
-    public int getCartCost(){
-        return 0;
     }
 }
