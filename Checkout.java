@@ -25,28 +25,31 @@ public class Checkout {
     private Iterator cartIterator;
 
     private JFrame frame;
+    
+    JTextField nameField = new JTextField(10);
+    JTextField cityField = new JTextField(10);
+    JTextField stateField = new JTextField(10);
+    JTextField zipField = new JTextField(10);
+    JTextField phoneField = new JTextField(10);
+    JTextField emailField = new JTextField(10);
+    JTextField cardField = new JTextField(10);
+    JTextField cTypeField = new JTextField(10);
+    JTextField cExpField = new JTextField(10);
+    JTextField couponField = new JTextField(10);
+    JLabel error1 = new JLabel("*Required");
 
     public Checkout(Iterator cartIterator){
         this.cartIterator = cartIterator;
-        JTextField nameField = new JTextField(10);
-        JTextField cityField = new JTextField(10);
-        JTextField stateField = new JTextField(10);
-        JTextField zipField = new JTextField(10);
-        JTextField phoneField = new JTextField(10);
-        JTextField emailField = new JTextField(10);
-        JTextField cardField = new JTextField(10);
-        JTextField cTypeField = new JTextField(10);
-        JTextField cExpField = new JTextField(10);
-        JTextField couponField = new JTextField(10);
-        JLabel nameLab = new JLabel("Name: ");
-        JLabel cityLab= new JLabel("City: ");
-        JLabel stateLab= new JLabel("State: ");
-        JLabel zipLab= new JLabel("Zip: ");
-        JLabel phoneLab= new JLabel("Phone: ");
-        JLabel emailLab= new JLabel("Email: ");
-        JLabel cardLab= new JLabel("Card Number: ");
-        JLabel cTypeLab= new JLabel("Card Type: ");
-        JLabel cExpLab= new JLabel("Card Expiration: ");
+
+        JLabel nameLab = new JLabel("*Name: ");
+        JLabel cityLab= new JLabel("*City: ");
+        JLabel stateLab= new JLabel("*State: ");
+        JLabel zipLab= new JLabel("*Zip: ");
+        JLabel phoneLab= new JLabel("*Phone: ");
+        JLabel emailLab= new JLabel("*Email: ");
+        JLabel cardLab= new JLabel("*Card Number: ");
+        JLabel cTypeLab= new JLabel("*Card Type: ");
+        JLabel cExpLab= new JLabel("*Card Expiration: ");
         JLabel couponLab= new JLabel("Coupon: ");
 
         nameLab.setLabelFor(nameField);
@@ -68,7 +71,7 @@ public class Checkout {
 
         JLabel[] labels = {nameLab, cityLab, stateLab, zipLab,
                            phoneLab, emailLab, cardLab, cTypeLab, cExpLab,
-                           couponLab};
+                           couponLab,error1};
         JTextField[] textFields = {nameField, cityField, stateField, zipField,
                                    phoneField, emailField, cardField, cTypeField,
                                    cExpField, couponField};
@@ -78,17 +81,19 @@ public class Checkout {
         cancelButton = new JButton("Cancel");
 
         checkoutButton.addActionListener(event -> {
-            name = nameField.getText();
-            city = cityField.getText();
-            state = stateField.getText();
-            zip = zipField.getText();
-            phone = phoneField.getText();
-            email = emailField.getText();
-            card = cardField.getText();
-            cc_type = cTypeField.getText();
-            cc_exp = cExpField.getText();
-            coupon = couponField.getText(); // pass into invoice
-            createInvoice(cartIterator);
+            if(validate()) {
+        		name = nameField.getText();
+        		city = cityField.getText();
+        		state = stateField.getText();
+        		zip = zipField.getText();
+        		phone = phoneField.getText();
+        		email = emailField.getText();
+        		card = cardField.getText();
+            	cc_type = cTypeField.getText();
+            	cc_exp = cExpField.getText();
+            	coupon = couponField.getText(); // pass into invoice
+            	createInvoice(cartIterator);
+        	}
         });
         cancelButton.addActionListener(event -> { //Close window.
             cancel();
@@ -106,7 +111,7 @@ public class Checkout {
 
         frame = new JFrame();
         frame.add(infoPane);
-        frame.setPreferredSize(new Dimension(300,300 ));
+        frame.setPreferredSize(new Dimension(300,330 ));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -137,8 +142,11 @@ public class Checkout {
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.EAST;
         int numLabels = labels.length;
+        
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        container.add(labels[labels.length-1], c);
 
-        for (int i = 0; i < numLabels; i++) {
+        for (int i = 0; i < numLabels-1; i++) {
             c.gridwidth = GridBagConstraints.RELATIVE; //next-to-last
             c.fill = GridBagConstraints.NONE;      //reset to default
             c.weightx = 0.0;                       //reset to default
@@ -149,5 +157,21 @@ public class Checkout {
             c.weightx = 1.0;
             container.add(textFields[i], c);
         }
+        
+    }
+    private boolean validate() {
+    	/*nameField, cityField, stateField, zipField,
+                                   phoneField, emailField, cardField, cTypeField,
+                                   cExpField, couponField*/
+    	if(nameField.getText().length()==0 ||
+    			cityField.getText().length()==0 ||
+    			stateField.getText().length()==0 ||
+    			phoneField.getText().length()==0 ||
+    			cardField.getText().length()==0 ||
+    			cTypeField.getText().length()==0 ||
+    			cExpField.getText().length()==0 ) {
+    		return false;
+    	}
+    	return true;
     }
 }
