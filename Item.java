@@ -47,7 +47,7 @@ public class Item extends JPanel {
 
     protected void updatePicture() {
         //Get the icon corresponding to the image.
-        ImageIcon icon = createImageIcon("/images/"
+        ImageIcon icon = createImageIcon("images/"
                 + getItemName() + ".gif");
         pictureLabel.setIcon(icon);
         pictureLabel.setToolTipText(getItemName().toString());
@@ -79,7 +79,7 @@ public class Item extends JPanel {
     }
 
     public ImageIcon getPicture(){
-        String path = "/images/" + getItemName() + ".gif";
+        String path = "images/" + getItemName() + ".gif";
         java.net.URL imgURL = Item.class.getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);
@@ -90,7 +90,7 @@ public class Item extends JPanel {
     }
 
     public Dimension getPictureDimension(){
-        String path = "/images/" + getItemName() + ".gif";
+        String path = "images/" + getItemName() + ".gif";
         java.net.URL imgURL = Item.class.getResource(path);
         ImageIcon image = new ImageIcon(imgURL);
         return new Dimension(image.getIconWidth(), image.getIconHeight());
