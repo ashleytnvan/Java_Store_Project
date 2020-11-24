@@ -12,7 +12,6 @@ public class Invoice {
     private double tax_rate;
     private JTextArea invoiceArea;
     private JFrame frame;
-
     private Iterator cartIterator;
 
     public Invoice(Iterator cartIterator, String name, String address,
@@ -54,7 +53,7 @@ public class Invoice {
         temp += itemCartCost;
         r += "Total Due: " + String.format("$%.2f\n\n", temp);
         r += "Billing Information\n";
-        r += "XXXXXXXXXXXX" + card.substring(card.length()-4, card.length()) + "\n";
+        r += "XXXXXXXXXXXX" + card.substring(card.length()-4) + "\n";
         r += ccType + " Expires on " + ccExp + "\n\n";
         r += "Shipping Address\n";
         r += address + "\n";

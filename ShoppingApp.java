@@ -32,11 +32,9 @@ public class ShoppingApp {
         shopPanel.add(new JLabel("Shopping"));
         exit = new JButton("Exit");
         shopPanel.add(exit);
-
         addACart = new JButton("Add a new cart");
         selectACart = new JButton("Select a cart");
         addACart.addActionListener(event -> {
-            //create new ShoppingCart and add it to carts ArrayList
             ShoppingCart cart = new ShoppingCart();
             addCart(cart);
             StoreApp storeApp = new StoreApp(cart);
@@ -72,12 +70,10 @@ public class ShoppingApp {
         cartsPanel.revalidate();
         cartsPanel.repaint();
         cartsPanel.setLayout(new BoxLayout(cartsPanel, BoxLayout.PAGE_AXIS));
-
         cartsPanel.setPreferredSize(new Dimension(200,300 ));
         JButton temp;
         for (int i=1; i <= size; i++){
             temp = new JButton("Cart " + i);
-            //temp.setPreferredSize(new Dimension(100,50 ));
             int finalI = i;
             temp.addActionListener(event -> {
                 cart_index = finalI -1;
@@ -101,13 +97,11 @@ public class ShoppingApp {
             cartsPanel.repaint();
             cartsPanel.add(addACart);
             cartsPanel.add(selectACart);
-
             frame.add(cartsPanel, BorderLayout.CENTER);
             frame.revalidate();
             frame.repaint();
             updateExit();
         });
-        //cartsPanel.getComponent(0)
         cartsPane = new JScrollPane(cartsPanel);
         frame.remove(cartsPanel);
         frame.add(cartsPane, BorderLayout.CENTER);

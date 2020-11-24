@@ -9,7 +9,6 @@ import javax.swing.event.*;
 
 public class ShoppingCart {
     private HashMap<Item,Integer> shoppingCart;
-
     private JLabel label;
     private JButton cancel;
     private JLabel header;
@@ -21,7 +20,6 @@ public class ShoppingCart {
     private JLabel footer3;
     private JButton buy;
     private double tax_rate;
-
     private ChangeListener listener;
 
     public ShoppingCart(){
@@ -37,7 +35,6 @@ public class ShoppingCart {
         header_title += "Cost                                 ";
         header = new JLabel(header_title);
         itemsPanel = new JPanel();
-
         double totalCost = calculateTotalCost();
         String footer_title1 = String.format("  Total cost: $%.2f", totalCost );
         double tax_due = totalCost * tax_rate;
@@ -47,13 +44,11 @@ public class ShoppingCart {
         footer1 = new JLabel( footer_title1 );
         footer2 = new JLabel( footer_title2 );
         footer3 = new JLabel( footer_title3 );
-
         buy = new JButton("Buy"); //takes to checkout.
         buy.addActionListener(event -> {
             checkout();
             cancel();
         });
-
         frame = new JFrame();
     }
 
@@ -79,7 +74,6 @@ public class ShoppingCart {
             shoppingCart.computeIfPresent(item, (k,v)->v+1);
         else
             shoppingCart.put(item,1);
-
     }
 
     public void removeItem(Item item){
@@ -98,16 +92,11 @@ public class ShoppingCart {
         return shoppingCart.size();
     }
 
-    public void cancel(){
+    private void cancel(){
         frame.setVisible(false); //you can't see me!
         frame.dispose();
         ChangeEvent changeEvent = new ChangeEvent(this);
         listener.stateChanged(changeEvent);
-    }
-
-    public void close(){
-        frame.setVisible(false); //you can't see me!
-        frame.dispose();
     }
 
     public void showCart(){
@@ -121,7 +110,6 @@ public class ShoppingCart {
         header_title += "Cost                                 ";
         header = new JLabel(header_title);
         itemsPanel = new JPanel();
-
         double totalCost = calculateTotalCost();
         String footer_title1 = String.format("  Total cost: $%.2f", totalCost );
         double tax_due = totalCost * tax_rate;
@@ -131,14 +119,11 @@ public class ShoppingCart {
         footer1 = new JLabel( footer_title1 );
         footer2 = new JLabel( footer_title2 );
         footer3 = new JLabel( footer_title3 );
-
         buy = new JButton("Buy"); //takes to checkout.
         buy.addActionListener(event -> {
             checkout();
         });
-
         showItems();
-
         itemsScroll = new JScrollPane(itemsPanel);
         frame = new JFrame();
         frame.setLayout(new GridBagLayout());
@@ -157,7 +142,6 @@ public class ShoppingCart {
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.WEST;
         frame.add(header,c);
-
         c.gridx=0;
         c.gridy=2;
         c.gridwidth = 2;
@@ -180,26 +164,22 @@ public class ShoppingCart {
         c.ipadx = 200;
         c.ipady = 25;
         frame.add(buy,c);
-
         frame.setPreferredSize(new Dimension(750,500 ));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
-    public double calculateTotalCost(){
+    private double calculateTotalCost(){
         double totalCost = 0;
-
         for ( Map.Entry<Item, Integer> e : shoppingCart.entrySet() ) {
             Item temp = e.getKey();
             totalCost += temp.getPrice() * e.getValue();
         }
-
         return totalCost;
     }
 
     public void showItems(){
-        //go through shopping cart.
         itemsPanel.removeAll();
         itemsPanel.validate();
         itemsPanel.repaint();
@@ -209,45 +189,34 @@ public class ShoppingCart {
         d.ipadx=0;
         d.weighty = 0;
         d.weightx = 0.1;
-
         updateTotal();
-        //use the hashMap to set values
         int i = 0;
         for ( Map.Entry<Item, Integer> e : shoppingCart.entrySet() ) {
             d.gridy=i++;
             Item temp = e.getKey();
-
             JLabel item_label = new JLabel(temp.getItemName());
             d.gridx = 0;
             itemsPanel.add(item_label,d);
-
-
             JButton decrease = new JButton("-");
             d.gridx = 1;
             itemsPanel.add(decrease,d);
-
             JLabel quantity_label = new JLabel(String.format("%d",e.getValue()));
             d.gridx = 2;
             itemsPanel.add(quantity_label,d);
-
             JButton increase = new JButton("+");
             d.gridx = 3;
             itemsPanel.add(increase,d);
-
             double item_cost = temp.getPrice() * e.getValue();
             JLabel cost_label = new JLabel(String.format("$%.2f",item_cost));
             d.gridx = 4;
             itemsPanel.add(cost_label,d);
-
             JButton remove = new JButton("Remove");
             d.gridx = 5;
             itemsPanel.add(remove,d);
-
             temp.setOpaque(true);
             d.gridx = 6;
             if (temp.hasPicture())
                 itemsPanel.add(temp, d);
-
             decrease.addActionListener(event -> {
                 if (e.getValue() > 0) {
                     e.setValue(e.getValue() - 1);
@@ -259,7 +228,6 @@ public class ShoppingCart {
                     itemsPanel.repaint();
                 }
             });
-
             increase.addActionListener(event -> {
                 e.setValue(e.getValue()+1);
                 quantity_label.setText(String.format("%d",e.getValue()));
@@ -269,7 +237,6 @@ public class ShoppingCart {
                 itemsPanel.revalidate();
                 itemsPanel.repaint();
             });
-
             remove.addActionListener(event -> {
                 itemsPanel.remove(item_label);
                 itemsPanel.remove(decrease);
@@ -281,33 +248,27 @@ public class ShoppingCart {
                 itemsPanel.remove(remove);
                 shoppingCart.remove(e.getKey());
                 updateTotal();
-
                 Dimension itemsDim = new Dimension(700, 0);
-
                 for ( Map.Entry<Item, Integer> f : shoppingCart.entrySet() ) {
                     if (f.getKey().hasPicture())
                         itemsDim.height += f.getKey().getPictureDimension().height;
                 }
-
                 itemsPanel.setPreferredSize(itemsDim);
                 itemsPanel.revalidate();
                 itemsPanel.repaint();
             });
         }
-
         Dimension itemsDim = new Dimension(700, 0);
-
         for ( Map.Entry<Item, Integer> e : shoppingCart.entrySet() ) {
             if (e.getKey().hasPicture())
                 itemsDim.height += e.getKey().getPictureDimension().height;
         }
-
         itemsPanel.setPreferredSize(itemsDim);
         itemsPanel.revalidate();
         itemsPanel.repaint();
     }
 
-    public void updateTotal(){
+    private void updateTotal(){
         double totalCost = calculateTotalCost();
         String footer_title1 = String.format("  Total cost: $%.2f", totalCost );
         double tax_due = totalCost * tax_rate;
@@ -317,10 +278,9 @@ public class ShoppingCart {
         footer1.setText( footer_title1 );
         footer2.setText( footer_title2 );
         footer3.setText( footer_title3 );
-
     }
 
-    public Iterator checkoutCart(){
+    private Iterator checkoutCart(){
         Iterator cartIterator = shoppingCart.entrySet().iterator();
         return cartIterator;
     }

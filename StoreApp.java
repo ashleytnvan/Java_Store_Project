@@ -18,7 +18,6 @@ public class StoreApp {
     private JButton exitButton;
     private java.net.URL imgURL;
     private JButton cartButton;
-
     private ChangeListener listener;
 
     public StoreApp(ShoppingCart cart){
@@ -30,14 +29,13 @@ public class StoreApp {
         });
     }
 
-    public void createInventory() {
+    private void createInventory() {
         Item grape = new Item("grape","grape",1.99,1.49);
         Item banana = new Item("banana","banana",1.50,1.50);
         Item kiwi = new Item("kiwi","kiwi",2.49,1.99);
         Item lemon = new Item("lemon","lemon",1.89,1.50);
         Item orange = new Item("orange","orange",2.49,1.99);
         Item strawberry = new Item("strawberry","strawberry",1.75,1.50);
-
         items.add(grape);
         items.add(banana);
         items.add(kiwi);
@@ -73,8 +71,6 @@ public class StoreApp {
         header.add(cartButton);
         header.add(exitButton);
         base.add(header, BorderLayout.NORTH);
-
-        // item display
         itemDisplay = new JPanel();
         itemDisplay.setLayout(new GridLayout((int)Math.round(Math.sqrt(items.size())),
                 (int)Math.round(Math.sqrt(items.size()))));
@@ -86,10 +82,8 @@ public class StoreApp {
             label.setAlignmentY(JLabel.BOTTOM_ALIGNMENT);
             label.setHorizontalAlignment(JLabel.RIGHT);
             label.setFont(new Font("Verdana", Font.PLAIN, 24));
-            //label.setBorder(BorderFactory.createLineBorder(Color.black));
             custom.add(label);
             custom.setPreferredSize(i.getPictureDimension());
-            //custom.setText(i.getItemName());
             itemDisplay.add( custom );
             custom.addActionListener(event->{
                 cart.addItem(i);
@@ -108,7 +102,6 @@ public class StoreApp {
         itemScroll.setPreferredSize(new Dimension(700,450) );
         base.add(itemScroll, BorderLayout.CENTER);
         frame = new JFrame("Store");
-        // frame visibility
         frame.add(base);
         frame.setSize(500, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,11 +109,9 @@ public class StoreApp {
         frame.setVisible(true);
     }
 
-    public void exit(){
+    private void exit(){
         frame.setVisible(false);
         frame.dispose();
-        cart.close();
-
         ChangeEvent changeEvent = new ChangeEvent(this);
         listener.stateChanged(changeEvent);
     }
@@ -132,22 +123,6 @@ public class StoreApp {
         }
         list_items += "\n";
         return list_items;
-    }
-
-    public void addItem(Item item){
-        items.add(item);
-    }
-
-    public void removeItem(Item item){
-        items.remove(items.indexOf(item));
-    }
-
-    public void clear() {
-        this.items = new ArrayList<>();
-    }
-
-    public int stock() {
-        return items.size();
     }
 
     public void addChangeListener(ChangeListener listener)

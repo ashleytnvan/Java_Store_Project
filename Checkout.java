@@ -47,7 +47,6 @@ public class Checkout {
     private JTextField cTypeField;
     private JTextField cExpField;
     private JTextField couponField;
-
     private ChangeListener listener;
 
     public Checkout(Iterator cartIterator){
@@ -63,7 +62,6 @@ public class Checkout {
         cTypeLab= new JLabel("Card Type: ");
         cExpLab= new JLabel("Card Expiration: ");
         couponLab= new JLabel("Coupon: ");
-
         nameLab.setLabelFor(nameField);
         addressLab.setLabelFor(addressField);
         cityLab.setLabelFor(cityField);
@@ -75,12 +73,10 @@ public class Checkout {
         cTypeLab.setLabelFor(cTypeField);
         cExpLab.setLabelFor(cExpField);
         couponLab.setLabelFor(couponField);
-
         JPanel infoPane = new JPanel();
         GridBagLayout gridbag = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         infoPane.setLayout(gridbag);
-
         nameField = new JTextField(10);
         addressField = new JTextField(10);
         cityField = new JTextField(10);
@@ -103,12 +99,9 @@ public class Checkout {
                                    phoneField, emailField, cardField, cTypeField,
                                    cExpField, couponField};
         addLabelTextRows(labels, textFields, gridbag, infoPane);
-
         checkoutButton = new JButton("Checkout");
         cancelButton = new JButton("Return to cart");
-
         boolean [] validated = new boolean[10];
-
         checkoutButton.addActionListener(event -> {
             if(validate()) {
         		name = nameField.getText();
@@ -238,7 +231,6 @@ public class Checkout {
         cancelButton.addActionListener(event -> { //Close window.
             cancel();
         });
-
         c.gridwidth = GridBagConstraints.REMAINDER; //last
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.WEST;
@@ -248,7 +240,6 @@ public class Checkout {
         infoPane.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Billing Information"),
                 BorderFactory.createEmptyBorder(5,5,5,5)));
-
         frame = new JFrame();
         frame.add(infoPane);
         frame.setPreferredSize(new Dimension(300,330 ));
@@ -269,14 +260,14 @@ public class Checkout {
     }
     */
 
-    public void cancel(){
+    private void cancel(){
         frame.setVisible(false); //you can't see me!
         frame.dispose();
         ChangeEvent changeEvent = new ChangeEvent(this);
         listener.stateChanged(changeEvent);
     }
 
-    public void createInvoice(Iterator cartIterator, String name,
+    private void createInvoice(Iterator cartIterator, String name,
                               String address,
                               String city, String state, String zip,
                               String phone, String email, String card,
@@ -314,9 +305,6 @@ public class Checkout {
         
     }
     private boolean validate() {
-    	/*nameField, cityField, stateField, zipField,
-                                   phoneField, emailField, cardField, cTypeField,
-                                   cExpField, couponField*/
     	if(nameField.getText().length()==0 ||
                 addressField.getText().length()==0 ||
     			cityField.getText().length()==0 ||
