@@ -4,6 +4,8 @@ import java.util.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Checkout {
     private String name;
@@ -45,11 +47,11 @@ public class Checkout {
     private JTextField cTypeField;
     private JTextField cExpField;
     private JTextField couponField;
-    private ShoppingCart cart;
 
-    public Checkout(Iterator cartIterator, ShoppingCart cart){
+    private ChangeListener listener;
+
+    public Checkout(Iterator cartIterator){
         this.cartIterator = cartIterator;
-        this.cart = cart;
         nameLab = new JLabel("Name: ");
         addressLab = new JLabel("Address: ");
         cityLab= new JLabel("City: ");
@@ -270,7 +272,8 @@ public class Checkout {
     public void cancel(){
         frame.setVisible(false); //you can't see me!
         frame.dispose();
-        cart.showCart();
+        ChangeEvent changeEvent = new ChangeEvent(this);
+        listener.stateChanged(changeEvent);
     }
 
     public void createInvoice(Iterator cartIterator, String name,
@@ -325,5 +328,10 @@ public class Checkout {
     		return false;
     	}
     	return true;
+    }
+
+    public void addChangeListener(ChangeListener listener)
+    {
+        this.listener = listener;
     }
 }

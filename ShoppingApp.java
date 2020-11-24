@@ -19,7 +19,6 @@ public class ShoppingApp {
     private JButton selectACart;
     private JScrollPane cartsPane;
 
-
     public ShoppingApp(){
         carts = new ArrayList<ShoppingCart>();
         size = 0;
@@ -27,7 +26,7 @@ public class ShoppingApp {
         showShoppingApp();
     }
 
-    public void showShoppingApp(){
+    private void showShoppingApp(){
         shopPanel = new JPanel();
         shopPanel.setLayout(new FlowLayout());
         shopPanel.add(new JLabel("Shopping"));
@@ -40,9 +39,11 @@ public class ShoppingApp {
             //create new ShoppingCart and add it to carts ArrayList
             ShoppingCart cart = new ShoppingCart();
             addCart(cart);
-            StoreApp storeApp = new StoreApp(cart,this);
-            cart.addStore(storeApp);
+            StoreApp storeApp = new StoreApp(cart);
             storeApp.showStore();
+            storeApp.addChangeListener(evt -> {
+                showShoppingApp();
+            });
             frame.setVisible(false);
             frame.dispose();
         });
@@ -66,7 +67,7 @@ public class ShoppingApp {
         frame.setVisible(true);
     }
 
-    public void chooseCart(){
+    private void chooseCart(){
         cartsPanel.removeAll();
         cartsPanel.revalidate();
         cartsPanel.repaint();
@@ -80,9 +81,11 @@ public class ShoppingApp {
             int finalI = i;
             temp.addActionListener(event -> {
                 cart_index = finalI -1;
-                StoreApp storeApp = new StoreApp(carts.get(cart_index), this);
-                carts.get(cart_index).addStore(storeApp);
+                StoreApp storeApp = new StoreApp(carts.get(cart_index));
                 storeApp.showStore();
+                storeApp.addChangeListener(evt -> {
+                    showShoppingApp();
+                });
                 frame.setVisible(false);
                 frame.dispose();
             });
@@ -112,7 +115,7 @@ public class ShoppingApp {
         frame.repaint();
     }
 
-    public void addCart(ShoppingCart s){
+    private void addCart(ShoppingCart s){
         carts.add(s);
         cart_index = size;
         size++;
@@ -123,5 +126,4 @@ public class ShoppingApp {
             System.exit(0);
         });
     }
-
 }

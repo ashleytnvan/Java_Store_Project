@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Map;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class StoreApp {
     private ArrayList<Item> items;
@@ -13,16 +15,19 @@ public class StoreApp {
     private JPanel header;
     private JPanel itemDisplay;
     private JScrollPane itemScroll;
-
     private JButton exitButton;
     private java.net.URL imgURL;
     private JButton cartButton;
-    private ShoppingApp shop;
-    public StoreApp(ShoppingCart cart, ShoppingApp shop){
+
+    private ChangeListener listener;
+
+    public StoreApp(ShoppingCart cart){
         items = new ArrayList<Item>();
         this.cart = cart;
         createInventory();
-        this.shop = shop;
+        cart.addChangeListener(event -> {
+            showStore();
+        });
     }
 
     public void createInventory() {
@@ -115,7 +120,9 @@ public class StoreApp {
         frame.setVisible(false);
         frame.dispose();
         cart.close();
-        shop.showShoppingApp();
+
+        ChangeEvent changeEvent = new ChangeEvent(this);
+        listener.stateChanged(changeEvent);
     }
 
     public String listItems(){
@@ -141,5 +148,10 @@ public class StoreApp {
 
     public int stock() {
         return items.size();
+    }
+
+    public void addChangeListener(ChangeListener listener)
+    {
+        this.listener = listener;
     }
 }

@@ -21,7 +21,8 @@ public class ShoppingCart {
     private JLabel footer3;
     private JButton buy;
     private double tax_rate;
-    private StoreApp store;
+
+    private ChangeListener listener;
 
     public ShoppingCart(){
         shoppingCart = new HashMap<Item,Integer>();
@@ -56,13 +57,12 @@ public class ShoppingCart {
         frame = new JFrame();
     }
 
-    public void addStore(StoreApp store){
-        this.store = store;
-    }
-
     public void checkout(){
         Iterator cartIterator = checkoutCart();
-        Checkout c = new Checkout(cartIterator, this);
+        Checkout c = new Checkout(cartIterator);
+        c.addChangeListener(evt -> {
+            showCart();
+        });
         frame.setVisible(false); //you can't see me!
         frame.dispose();
     }
@@ -101,7 +101,8 @@ public class ShoppingCart {
     public void cancel(){
         frame.setVisible(false); //you can't see me!
         frame.dispose();
-        store.showStore();
+        ChangeEvent changeEvent = new ChangeEvent(this);
+        listener.stateChanged(changeEvent);
     }
 
     public void close(){
@@ -322,5 +323,10 @@ public class ShoppingCart {
     public Iterator checkoutCart(){
         Iterator cartIterator = shoppingCart.entrySet().iterator();
         return cartIterator;
+    }
+
+    public void addChangeListener(ChangeListener listener)
+    {
+        this.listener = listener;
     }
 }
