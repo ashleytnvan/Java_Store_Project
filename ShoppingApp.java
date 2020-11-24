@@ -8,7 +8,6 @@ import javax.swing.event.*;
 
 public class ShoppingApp {
     private ArrayList<ShoppingCart> carts;
-    private ArrayList<JButton> cart_buttons;
     private int size;
     private int cart_index;
     private JLabel label;
@@ -23,9 +22,12 @@ public class ShoppingApp {
 
     public ShoppingApp(){
         carts = new ArrayList<ShoppingCart>();
-        cart_buttons = new ArrayList<JButton>();
         size = 0;
         cart_index = -1;
+        showShoppingApp();
+    }
+
+    public void showShoppingApp(){
         shopPanel = new JPanel();
         shopPanel.setLayout(new FlowLayout());
         shopPanel.add(new JLabel("Shopping"));
@@ -36,10 +38,13 @@ public class ShoppingApp {
         selectACart = new JButton("Select a cart");
         addACart.addActionListener(event -> {
             //create new ShoppingCart and add it to carts ArrayList
-        	ShoppingCart cart = new ShoppingCart();
-        	addCart(cart);
-        	StoreApp storeApp = new StoreApp(cart);
-        	storeApp.showStore();
+            ShoppingCart cart = new ShoppingCart();
+            addCart(cart);
+            StoreApp storeApp = new StoreApp(cart,this);
+            cart.addStore(storeApp);
+            storeApp.showStore();
+            frame.setVisible(false);
+            frame.dispose();
         });
         selectACart.addActionListener(event -> {
             chooseCart();
@@ -59,7 +64,6 @@ public class ShoppingApp {
         frame.setPreferredSize(new Dimension(375,350 ));
         frame.pack();
         frame.setVisible(true);
-
     }
 
     public void chooseCart(){
@@ -76,8 +80,11 @@ public class ShoppingApp {
             int finalI = i;
             temp.addActionListener(event -> {
                 cart_index = finalI -1;
-                StoreApp storeApp = new StoreApp(carts.get(cart_index));
+                StoreApp storeApp = new StoreApp(carts.get(cart_index), this);
+                carts.get(cart_index).addStore(storeApp);
                 storeApp.showStore();
+                frame.setVisible(false);
+                frame.dispose();
             });
             cartsPanel.add(temp);
         }

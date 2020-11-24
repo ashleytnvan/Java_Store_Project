@@ -21,13 +21,13 @@ public class ShoppingCart {
     private JLabel footer3;
     private JButton buy;
     private double tax_rate;
+    private StoreApp store;
 
     public ShoppingCart(){
         shoppingCart = new HashMap<Item,Integer>();
         tax_rate = 0.0725;
-
         label = new JLabel("Shopping Cart");
-        cancel = new JButton("Cancel"); //takes back to store
+        cancel = new JButton("Store"); //takes back to store
         cancel.addActionListener(event -> {
             cancel();
         });
@@ -50,14 +50,21 @@ public class ShoppingCart {
         buy = new JButton("Buy"); //takes to checkout.
         buy.addActionListener(event -> {
             checkout();
+            cancel();
         });
 
         frame = new JFrame();
     }
 
+    public void addStore(StoreApp store){
+        this.store = store;
+    }
+
     public void checkout(){
         Iterator cartIterator = checkoutCart();
-        Checkout c = new Checkout(cartIterator);
+        Checkout c = new Checkout(cartIterator, this);
+        frame.setVisible(false); //you can't see me!
+        frame.dispose();
     }
 
     public void listItems(){
@@ -94,11 +101,17 @@ public class ShoppingCart {
     public void cancel(){
         frame.setVisible(false); //you can't see me!
         frame.dispose();
+        store.showStore();
+    }
+
+    public void close(){
+        frame.setVisible(false); //you can't see me!
+        frame.dispose();
     }
 
     public void showCart(){
         label = new JLabel("Shopping Cart");
-        cancel = new JButton("Cancel"); //takes back to store
+        cancel = new JButton("Store"); //takes back to store
         cancel.addActionListener(event -> {
             cancel();
         });

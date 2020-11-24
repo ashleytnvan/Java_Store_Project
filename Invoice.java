@@ -15,12 +15,16 @@ public class Invoice {
 
     private Iterator cartIterator;
 
-    public Invoice(Iterator cartIterator ){
+    public Invoice(Iterator cartIterator, String name, String address,
+                   String city, String state, String zip,
+                   String phone, String email, String card,
+                   String ccExp, String ccType, String coupon ){
         tax_rate = 0.0725;
         this.cartIterator = cartIterator;
         itemCartCost = 0;
-        invoiceArea = new JTextArea(20, 40);
-        invoiceArea.setText(createInvoice(cartIterator));
+        invoiceArea = new JTextArea(22, 40);
+        invoiceArea.setText(createInvoice(cartIterator, name, address, city,
+                        state, zip, phone, email, card, ccExp, ccType, coupon));
         frame = new JFrame();
         frame.add(new JScrollPane(invoiceArea),
                 BorderLayout.CENTER);
@@ -29,9 +33,13 @@ public class Invoice {
         frame.setVisible(true);
     }
 
-    private String createInvoice(Iterator cartIterator){
+    private String createInvoice(Iterator cartIterator, String name,
+                                 String address,
+                                 String city, String state, String zip,
+                                 String phone, String email, String card,
+                                 String ccExp, String ccType, String coupon){
         String r = "               Invoice\n  ";
-        r += "Thank you for shopping with us\n\n";
+        r += "Thank you for shopping with us, " + name + "\n\n";
         r += "Items          Quantity          Cost\n";
         itemCartCost = 0;
         while(cartIterator.hasNext()){
@@ -44,7 +52,17 @@ public class Invoice {
         double temp = itemCartCost * tax_rate;
         r += "Tax Due: " + String.format("$%.2f\n", temp);
         temp += itemCartCost;
-        r += "Total Due: " + String.format("$%.2f\n", temp);
+        r += "Total Due: " + String.format("$%.2f\n\n", temp);
+        r += "Billing Information\n";
+        r += "XXXXXXXXXXXX" + card.substring(card.length()-4, card.length()) + "\n";
+        r += ccType + " Expires on " + ccExp + "\n\n";
+        r += "Shipping Address\n";
+        r += address + "\n";
+        r += city + ", " + state + " " + zip + "\n\n";
+        r += "Contact Information\n";
+        r += phone + "\n";
+        r += email + "\n";
+
         return r;
     }
 }

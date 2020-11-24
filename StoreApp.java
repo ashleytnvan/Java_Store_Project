@@ -17,11 +17,12 @@ public class StoreApp {
     private JButton exitButton;
     private java.net.URL imgURL;
     private JButton cartButton;
-
-    public StoreApp(ShoppingCart cart){
+    private ShoppingApp shop;
+    public StoreApp(ShoppingCart cart, ShoppingApp shop){
         items = new ArrayList<Item>();
         this.cart = cart;
         createInventory();
+        this.shop = shop;
     }
 
     public void createInventory() {
@@ -45,11 +46,21 @@ public class StoreApp {
         base.setLayout(new BorderLayout()); // use base border layout
         header = new JPanel();
         header.setLayout(new FlowLayout(FlowLayout.RIGHT)); // right justified
-        exitButton = new JButton("Cancel");
+        exitButton = new JButton("Return to carts");
         imgURL = Item.class.getResource("/images/shopping_cart.png");
+        boolean imgFound = false;
+        try {
+            cartButton = new JButton(new ImageIcon(imgURL));
+        }
+        catch (Exception e){
+            imgFound = false;
+        }
+        imgURL = Item.class.getResource("images/shopping_cart.png");
         cartButton = new JButton(new ImageIcon(imgURL));
         cartButton.addActionListener(event -> {
             cart.showCart();
+            frame.setVisible(false); //you can't see me!
+            frame.dispose();
         });
         exitButton.addActionListener(event -> {
             exit();
@@ -63,7 +74,6 @@ public class StoreApp {
         itemDisplay.setLayout(new GridLayout((int)Math.round(Math.sqrt(items.size())),
                 (int)Math.round(Math.sqrt(items.size()))));
         for(Item i: items) {
-
             i.setOpaque(true);
             JButton custom = new JButton(i.getPicture());
             JLabel label = new JLabel(i.getItemName());
@@ -89,8 +99,6 @@ public class StoreApp {
             itemDisplay.add(i);
              */
         }
-
-
         itemScroll = new JScrollPane(itemDisplay);
         itemScroll.setPreferredSize(new Dimension(700,450) );
         base.add(itemScroll, BorderLayout.CENTER);
@@ -104,10 +112,10 @@ public class StoreApp {
     }
 
     public void exit(){
-
         frame.setVisible(false);
         frame.dispose();
-        cart.cancel();
+        cart.close();
+        shop.showShoppingApp();
     }
 
     public String listItems(){
