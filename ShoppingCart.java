@@ -51,6 +51,8 @@ public class ShoppingCart {
         buy.addActionListener(event -> {
             checkout();
         });
+
+        frame = new JFrame();
     }
 
     public void checkout(){
