@@ -7,9 +7,9 @@ public class Tester {
     private static BlockingQueue<Message> queue = new LinkedBlockingQueue<>();
 
     public static void main(String[] args) {
-
-        ShoppingApp shoppingApp = new ShoppingApp(queue);
-        shoppingApp.mainLoop();
+        ShoppingController shoppingController = new ShoppingController(queue);
+        shoppingController.mainLoop();
         queue.clear();
+        shoppingController.dispose();
     }
 }

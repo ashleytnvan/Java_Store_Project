@@ -69,7 +69,12 @@ public class StoreApp {
             frame.dispose();
         });
         exitButton.addActionListener(event -> {
-            exit();
+            try{
+                queue.put(new CloseStoreMessage());
+            }
+            catch(InterruptedException exception){
+                exception.printStackTrace();
+            }
         });
         header.add(cartButton);
         header.add(exitButton);
@@ -123,7 +128,7 @@ public class StoreApp {
         cart.showItems();
     }
 
-    private void exit(){
+    public void exit(){
         frame.setVisible(false);
         frame.dispose();
         ChangeEvent changeEvent = new ChangeEvent(this);

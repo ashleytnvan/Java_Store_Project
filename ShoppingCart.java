@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.util.concurrent.BlockingQueue;
 
 public class ShoppingCart {
     private HashMap<Item,Integer> shoppingCart;
@@ -21,14 +22,21 @@ public class ShoppingCart {
     private JButton buy;
     private double tax_rate;
     private ChangeListener listener;
+    private BlockingQueue queue;
 
-    public ShoppingCart(){
+    public ShoppingCart(BlockingQueue<Message> queue){
+        this.queue = queue;
         shoppingCart = new HashMap<Item,Integer>();
         tax_rate = 0.0725;
         label = new JLabel("Shopping Cart");
         cancel = new JButton("Store"); //takes back to store
         cancel.addActionListener(event -> {
-            cancel();
+            try{
+                queue.put(new CloseCartMessage());
+            }
+            catch(InterruptedException exception) {
+                exception.printStackTrace();
+            }
         });
         String header_title = "      Items                                   ";
         header_title += "Quantity                         ";
@@ -46,8 +54,13 @@ public class ShoppingCart {
         footer3 = new JLabel( footer_title3 );
         buy = new JButton("Buy"); //takes to checkout.
         buy.addActionListener(event -> {
-            checkout();
-            cancel();
+            if(!shoppingCart.isEmpty())
+                try{
+                    queue.put(new BuyCartMessage());
+                }
+                catch(InterruptedException exception) {
+                    exception.printStackTrace();
+                }
         });
         frame = new JFrame();
     }
@@ -60,13 +73,6 @@ public class ShoppingCart {
         });
         frame.setVisible(false); //you can't see me!
         frame.dispose();
-    }
-
-    public void listItems(){
-        for (Map.Entry me : shoppingCart.entrySet() ){
-            System.out.println("Item = " + me.getKey() +
-                    ", Quantity = " + me.getValue());
-        }
     }
 
     public void addItem(Item item){
@@ -84,15 +90,7 @@ public class ShoppingCart {
                 shoppingCart.remove(item);
     }
 
-    public void clear(){
-        shoppingCart.clear();
-    }
-
-    public int size(){
-        return shoppingCart.size();
-    }
-
-    private void cancel(){
+    public void cancel(){
         frame.setVisible(false); //you can't see me!
         frame.dispose();
         ChangeEvent changeEvent = new ChangeEvent(this);
@@ -103,7 +101,12 @@ public class ShoppingCart {
         label = new JLabel("Shopping Cart");
         cancel = new JButton("Store"); //takes back to store
         cancel.addActionListener(event -> {
-            cancel();
+            try{
+                queue.put(new CloseCartMessage());
+            }
+            catch(InterruptedException exception) {
+                exception.printStackTrace();
+            }
         });
         String header_title = "      Items                                   ";
         header_title += "Quantity                         ";
@@ -121,7 +124,13 @@ public class ShoppingCart {
         footer3 = new JLabel( footer_title3 );
         buy = new JButton("Buy"); //takes to checkout.
         buy.addActionListener(event -> {
-            checkout();
+            if(!shoppingCart.isEmpty())
+                try{
+                    queue.put(new BuyCartMessage());
+                }
+                catch(InterruptedException exception) {
+                    exception.printStackTrace();
+                }
         });
         showItems();
         itemsScroll = new JScrollPane(itemsPanel);

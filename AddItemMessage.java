@@ -2,6 +2,7 @@ package milestone4;
 
 public class AddItemMessage implements Message {
     Item i;
+
     AddItemMessage(Item i){
         this.i =i;
     }
