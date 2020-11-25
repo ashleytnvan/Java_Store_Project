@@ -3,8 +3,11 @@ package milestone4;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.BlockingQueue;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ShoppingApp {
     private ArrayList<ShoppingCart> carts;
@@ -18,12 +21,58 @@ public class ShoppingApp {
     private JButton addACart;
     private JButton selectACart;
     private JScrollPane cartsPane;
+    private BlockingQueue<Message> queue;
+    private ShoppingCart shoppingCart;
+    private StoreApp storeApp;
+    private List<Valve> valves = new LinkedList<Valve>();
 
-    public ShoppingApp(){
+    public ShoppingApp(BlockingQueue<Message> queue){
+        this.queue = queue;
         carts = new ArrayList<ShoppingCart>();
         size = 0;
         cart_index = -1;
         showShoppingApp();
+        valves.add(new AddItemValve());
+    }
+
+    public void mainLoop(){
+        ValveResponse response = ValveResponse.EXECUTED;
+        Message message = null;
+        while (response != ValveResponse.FINISH) {
+            try {
+                message = queue.take(); // <--- take next message from the queue
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // Look for a Valve that can process a message
+            for (Valve valve : valves) {
+                response = valve.execute(message);
+                // if successfully processed or game over, leave the loop
+                if (response != ValveResponse.MISS) {
+                    break;
+                }
+            }
+        }
+    }
+
+    private interface Valve {
+        /**
+         * Performs certain action in response to message
+         */
+        public ValveResponse execute(Message message);
+    }
+
+    private class AddItemValve implements Valve {
+        @Override
+        public ValveResponse execute(Message message) {
+            if (message.getClass() != AddItemMessage.class) {
+                return ValveResponse.MISS;
+            }
+            storeApp.addItem(((AddItemMessage) message).getItem());
+            // actions in Model
+            // actions in View
+            return ValveResponse.EXECUTED;
+        }
     }
 
     private void showShoppingApp(){
@@ -35,9 +84,9 @@ public class ShoppingApp {
         addACart = new JButton("Add a new cart");
         selectACart = new JButton("Select a cart");
         addACart.addActionListener(event -> {
-            ShoppingCart cart = new ShoppingCart();
-            addCart(cart);
-            StoreApp storeApp = new StoreApp(cart);
+            shoppingCart = new ShoppingCart();
+            addCart(shoppingCart);
+            storeApp = new StoreApp(shoppingCart, queue);
             storeApp.showStore();
             storeApp.addChangeListener(evt -> {
                 showShoppingApp();
@@ -77,7 +126,7 @@ public class ShoppingApp {
             int finalI = i;
             temp.addActionListener(event -> {
                 cart_index = finalI -1;
-                StoreApp storeApp = new StoreApp(carts.get(cart_index));
+                StoreApp storeApp = new StoreApp(carts.get(cart_index), queue);
                 storeApp.showStore();
                 storeApp.addChangeListener(evt -> {
                     showShoppingApp();

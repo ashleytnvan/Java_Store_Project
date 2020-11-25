@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -19,8 +20,10 @@ public class StoreApp {
     private java.net.URL imgURL;
     private JButton cartButton;
     private ChangeListener listener;
+    private BlockingQueue queue;
 
-    public StoreApp(ShoppingCart cart){
+    public StoreApp(ShoppingCart cart, BlockingQueue<Message> queue){
+        this.queue = queue;
         items = new ArrayList<Item>();
         this.cart = cart;
         createInventory();
@@ -86,8 +89,14 @@ public class StoreApp {
             custom.setPreferredSize(i.getPictureDimension());
             itemDisplay.add( custom );
             custom.addActionListener(event->{
-                cart.addItem(i);
-                cart.showItems();
+                try{
+                    queue.put(new AddItemMessage(i));
+                }
+                catch(InterruptedException exception){
+                    exception.printStackTrace();
+                }
+                //                cart.addItem(i);
+//                cart.showItems();
             });
             /*
             i.addToCart.addActionListener(event -> {
@@ -109,20 +118,16 @@ public class StoreApp {
         frame.setVisible(true);
     }
 
+    public void addItem(Item i){
+        cart.addItem(i);
+        cart.showItems();
+    }
+
     private void exit(){
         frame.setVisible(false);
         frame.dispose();
         ChangeEvent changeEvent = new ChangeEvent(this);
         listener.stateChanged(changeEvent);
-    }
-
-    public String listItems(){
-        String list_items = "";
-        for(Item item :  items){
-            list_items += item.toString() + " ";
-        }
-        list_items += "\n";
-        return list_items;
     }
 
     public void addChangeListener(ChangeListener listener)
