@@ -24,6 +24,10 @@ public class ShoppingCart {
     private ChangeListener listener;
     private BlockingQueue queue;
 
+    /**
+     * Creates shopping cart with BlockingQueue for messages
+     * @param queue the BlockingQueue
+     */
     public ShoppingCart(BlockingQueue<Message> queue){
         this.queue = queue;
         shoppingCart = new HashMap<Item,Integer>();
@@ -65,6 +69,9 @@ public class ShoppingCart {
         frame = new JFrame();
     }
 
+    /**
+     * Takes user to the checkout window with current cart
+     */
     public void checkout(){
         Iterator cartIterator = checkoutCart();
         Checkout c = new Checkout(cartIterator);
@@ -75,6 +82,10 @@ public class ShoppingCart {
         frame.dispose();
     }
 
+    /**
+     * Adds an item to the shopping cart
+     * @param item the item to add
+     */
     public void addItem(Item item){
         if (shoppingCart.containsKey(item))
             shoppingCart.computeIfPresent(item, (k,v)->v+1);
@@ -82,6 +93,10 @@ public class ShoppingCart {
             shoppingCart.put(item,1);
     }
 
+    /**
+     * Removes an item from the cart
+     * @param item the item to be removed
+     */
     public void removeItem(Item item){
         if (shoppingCart.containsKey(item))
             if(shoppingCart.get(item) > 0)
@@ -90,6 +105,9 @@ public class ShoppingCart {
                 shoppingCart.remove(item);
     }
 
+    /**
+     * Cancels the shopping cart and disposes the GUI window
+     */
     public void cancel(){
         frame.setVisible(false); //you can't see me!
         frame.dispose();
@@ -97,6 +115,9 @@ public class ShoppingCart {
         listener.stateChanged(changeEvent);
     }
 
+    /**
+     * Shows the shopping cart GUI
+     */
     public void showCart(){
         label = new JLabel("Shopping Cart");
         cancel = new JButton("Store"); //takes back to store
@@ -179,6 +200,10 @@ public class ShoppingCart {
         frame.setVisible(true);
     }
 
+    /**
+     * Returns the total cost of the items in the cart
+     * @return the total cost
+     */
     private double calculateTotalCost(){
         double totalCost = 0;
         for ( Map.Entry<Item, Integer> e : shoppingCart.entrySet() ) {
@@ -188,6 +213,9 @@ public class ShoppingCart {
         return totalCost;
     }
 
+    /**
+     * Shows the items that have been added to the shopping cart
+     */
     public void showItems(){
         itemsPanel.removeAll();
         itemsPanel.validate();
@@ -277,6 +305,9 @@ public class ShoppingCart {
         itemsPanel.repaint();
     }
 
+    /**
+     * Calculates the total cost of the items in the cart before and after taxes and shows them in the GUI
+     */
     private void updateTotal(){
         double totalCost = calculateTotalCost();
         String footer_title1 = String.format("  Total cost: $%.2f", totalCost );
@@ -289,11 +320,19 @@ public class ShoppingCart {
         footer3.setText( footer_title3 );
     }
 
+    /**
+     * Returns the cart iterator
+     * @return the cart iterator
+     */
     private Iterator checkoutCart(){
         Iterator cartIterator = shoppingCart.entrySet().iterator();
         return cartIterator;
     }
 
+    /**
+     * Adds a ChangeListener object
+     * @param listener the ChangeListener to add
+     */
     public void addChangeListener(ChangeListener listener)
     {
         this.listener = listener;

@@ -26,6 +26,10 @@ public class ShoppingController {
     private StoreApp storeApp;
     private List<Valve> valves = new LinkedList<Valve>();
 
+    /**
+     * The Controller for the MVC pattern
+     * @param queue the BlockingQueue of messages
+     */
     public ShoppingController(BlockingQueue<Message> queue){
         this.queue = queue;
         carts = new ArrayList<ShoppingCart>();
@@ -42,6 +46,9 @@ public class ShoppingController {
         valves.add(new BuyCartValve());
     }
 
+    /**
+     * Main loop of the Shopping controller
+     */
     public void mainLoop(){
         ValveResponse response = ValveResponse.EXECUTED;
         Message message = null;
@@ -70,6 +77,11 @@ public class ShoppingController {
     }
 
     private class AddItemValve implements Valve {
+        /**
+         * Creates an AddItem valve response
+         * @param message the message
+         * @return the response
+         */
         @Override
         public ValveResponse execute(Message message) {
             if (message.getClass() != AddItemMessage.class) {
@@ -81,6 +93,11 @@ public class ShoppingController {
     }
 
     private class ExitShopValve implements Valve {
+        /**
+         * Creates valve response for exiting the shop
+         * @param message the message
+         * @return the response
+         */
         @Override
         public ValveResponse execute(Message message) {
             if (message.getClass() != ExitShopMessage.class) {
@@ -91,6 +108,11 @@ public class ShoppingController {
     }
 
     private class AddCartValve implements Valve {
+        /**
+         * Creates valve response to add a cart
+         * @param message the message
+         * @return the response
+         */
         @Override
         public ValveResponse execute(Message message) {
             if (message.getClass() != AddCartMessage.class) {
@@ -111,6 +133,11 @@ public class ShoppingController {
     }
 
     private class CloseCartValve implements Valve {
+        /**
+         * Creates a valve response for closing a cart
+         * @param message the message
+         * @return the response
+         */
         @Override
         public ValveResponse execute(Message message) {
             if (message.getClass() != CloseCartMessage.class) {
@@ -123,6 +150,11 @@ public class ShoppingController {
     }
 
     private class BuyCartValve implements Valve {
+        /**
+         * Creates valve response to buy items in the cart
+         * @param message the message
+         * @return the response
+         */
         @Override
         public ValveResponse execute(Message message) {
             if (message.getClass() != BuyCartMessage.class) {
@@ -135,6 +167,11 @@ public class ShoppingController {
     }
 
     private class SelectACartValve implements Valve {
+        /**
+         * Creates valve response for selecting a cart
+         * @param message the message
+         * @return the response
+         */
         @Override
         public ValveResponse execute(Message message) {
             if (message.getClass() != SelectACartMessage.class) {
@@ -147,6 +184,11 @@ public class ShoppingController {
     }
 
     private class SelectPreviousCartValve implements Valve {
+        /**
+         * Creates valve response to select the previous cart
+         * @param message the message
+         * @return the response
+         */
         @Override
         public ValveResponse execute(Message message) {
             if (message.getClass() != SelectPreviousCartMessage.class) {
@@ -166,6 +208,11 @@ public class ShoppingController {
     }
 
     private class CloseStoreValve implements Valve {
+        /**
+         * Creates valve response to closing the store
+         * @param message the message
+         * @return the response
+         */
         @Override
         public ValveResponse execute(Message message) {
             if (message.getClass() != CloseStoreMessage.class) {
@@ -177,6 +224,9 @@ public class ShoppingController {
         }
     }
 
+    /**
+     * Display the controller GUI
+     */
     private void showShoppingController(){
         shopPanel = new JPanel();
         shopPanel.setLayout(new FlowLayout());
@@ -223,6 +273,9 @@ public class ShoppingController {
         frame.setVisible(true);
     }
 
+    /**
+     * Paints the cart selection panel
+     */
     private void chooseCart(){
         cartsPanel.removeAll();
         cartsPanel.revalidate();
@@ -265,18 +318,28 @@ public class ShoppingController {
         frame.repaint();
     }
 
+    /**
+     * Adds a cart to the shopping app
+     * @param s the shopping cart
+     */
     private void addCart(ShoppingCart s){
         carts.add(s);
         cart_index = size;
         size++;
     }
 
+    /**
+     * Exits the shopping app
+     */
     private void updateExit(){
         exit.addActionListener(event -> {
             System.exit(0);
         });
     }
 
+    /**
+     * Disposes the frame
+     */
     public void dispose(){
         System.exit(0);
     }

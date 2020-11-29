@@ -22,6 +22,11 @@ public class StoreApp {
     private ChangeListener listener;
     private BlockingQueue queue;
 
+    /**
+     * Creates a store instance with specified cart and blocking queue
+     * @param cart the shopping cart
+     * @param queue the BlockingQueue
+     */
     public StoreApp(ShoppingCart cart, BlockingQueue<Message> queue){
         this.queue = queue;
         items = new ArrayList<Item>();
@@ -32,6 +37,9 @@ public class StoreApp {
         });
     }
 
+    /**
+     * Creates the inventory of items available in the store
+     */
     private void createInventory() {
         Item grape = new Item("grape","grape",1.99,1.49);
         Item banana = new Item("banana","banana",1.50,1.50);
@@ -47,6 +55,9 @@ public class StoreApp {
         items.add(strawberry);
     }
 
+    /**
+     * Draws the store GUI
+     */
     public void showStore(){
         base = new JPanel();
         base.setLayout(new BorderLayout()); // use base border layout
@@ -123,11 +134,18 @@ public class StoreApp {
         frame.setVisible(true);
     }
 
+    /**
+     * Adds a new item to the store
+     * @param i the item to add
+     */
     public void addItem(Item i){
         cart.addItem(i);
         cart.showItems();
     }
 
+    /**
+     * Exits the store window
+     */
     public void exit(){
         frame.setVisible(false);
         frame.dispose();
@@ -135,6 +153,10 @@ public class StoreApp {
         listener.stateChanged(changeEvent);
     }
 
+    /**
+     * Adds a ChangeListener
+     * @param listener the ChangeListener
+     */
     public void addChangeListener(ChangeListener listener)
     {
         this.listener = listener;

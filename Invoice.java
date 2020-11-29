@@ -14,6 +14,21 @@ public class Invoice {
     private JFrame frame;
     private Iterator cartIterator;
 
+    /**
+     * Creates the frame for the Invoice
+     * @param cartIterator the Iterator to traverse user carts
+     * @param name customer name
+     * @param address customer address
+     * @param city customer city
+     * @param state customer state
+     * @param zip customer zip code
+     * @param phone customer phone number
+     * @param email customer email address
+     * @param card customer credit/debit card number
+     * @param ccExp customer card expiration date
+     * @param ccType customer credit provider
+     * @param coupon customer coupon code
+     */
     public Invoice(Iterator cartIterator, String name, String address,
                    String city, String state, String zip,
                    String phone, String email, String card,
@@ -32,6 +47,22 @@ public class Invoice {
         frame.setVisible(true);
     }
 
+    /**
+     * Returns the String for Invoice Area
+     * @param cartIterator the Iterator for user carts
+     * @param name customer name
+     * @param address customer address
+     * @param city customer city
+     * @param state customer state
+     * @param zip customer zip
+     * @param phone customer phone
+     * @param email customer email
+     * @param card customer credit/debit card
+     * @param ccExp customer card expiration date
+     * @param ccType customer credit provider
+     * @param coupon customer coupon code
+     * @return the String to fill in Invoice text
+     */
     private String createInvoice(Iterator cartIterator, String name,
                                  String address,
                                  String city, String state, String zip,

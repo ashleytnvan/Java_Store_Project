@@ -26,6 +26,10 @@ public class ShoppingApp {
     private StoreApp storeApp;
     private List<Valve> valves = new LinkedList<Valve>();
 
+    /**
+     * Creates the Shopping App interface
+     * @param queue the blocking queue to receive messages
+     */
     public ShoppingApp(BlockingQueue<Message> queue){
         this.queue = queue;
         carts = new ArrayList<ShoppingCart>();
@@ -35,6 +39,9 @@ public class ShoppingApp {
         valves.add(new AddItemValve());
     }
 
+    /**
+     * The main loop of the Shopping app program
+     */
     public void mainLoop(){
         ValveResponse response = ValveResponse.EXECUTED;
         Message message = null;
@@ -63,6 +70,11 @@ public class ShoppingApp {
     }
 
     private class AddItemValve implements Valve {
+        /**
+         * Returns a ValveResponse based on provided message
+         * @param message the message to execute
+         * @return the valve response to the message
+         */
         @Override
         public ValveResponse execute(Message message) {
             if (message.getClass() != AddItemMessage.class) {
@@ -75,6 +87,9 @@ public class ShoppingApp {
         }
     }
 
+    /**
+     * Draws the Shopping App GUI
+     */
     private void showShoppingApp(){
         shopPanel = new JPanel();
         shopPanel.setLayout(new FlowLayout());
@@ -84,7 +99,7 @@ public class ShoppingApp {
         addACart = new JButton("Add a new cart");
         selectACart = new JButton("Select a cart");
         addACart.addActionListener(event -> {
-            shoppingCart = new ShoppingCart();
+            shoppingCart = new ShoppingCart(queue);
             addCart(shoppingCart);
             storeApp = new StoreApp(shoppingCart, queue);
             storeApp.showStore();
@@ -114,6 +129,9 @@ public class ShoppingApp {
         frame.setVisible(true);
     }
 
+    /**
+     * Displays available carts to choose from
+     */
     private void chooseCart(){
         cartsPanel.removeAll();
         cartsPanel.revalidate();
@@ -158,12 +176,19 @@ public class ShoppingApp {
         frame.repaint();
     }
 
+    /**
+     * Add a cart
+     * @param s ShoppingCart object to add
+     */
     private void addCart(ShoppingCart s){
         carts.add(s);
         cart_index = size;
         size++;
     }
 
+    /**
+     * Exits program
+     */
     private void updateExit(){
         exit.addActionListener(event -> {
             System.exit(0);

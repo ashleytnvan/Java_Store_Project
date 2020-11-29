@@ -49,6 +49,10 @@ public class Checkout {
     private JTextField couponField;
     private ChangeListener listener;
 
+    /**
+     * Constructs a Checkout panel that provides required information fields
+     * @param cartIterator an iterator to go through all user carts
+     */
     public Checkout(Iterator cartIterator){
         this.cartIterator = cartIterator;
         nameLab = new JLabel("Name: ");
@@ -260,6 +264,9 @@ public class Checkout {
     }
     */
 
+    /**
+     * Cancels checkout and disposes the checkout frame.
+     */
     private void cancel(){
         frame.setVisible(false); //you can't see me!
         frame.dispose();
@@ -267,6 +274,21 @@ public class Checkout {
         listener.stateChanged(changeEvent);
     }
 
+    /**
+     * Creates an invoice based on cart contents and provided information fields
+     * @param cartIterator the iterator for user carts
+     * @param name customer name
+     * @param address customer address
+     * @param city customer city
+     * @param state customer state
+     * @param zip customer zip code
+     * @param phone customer phone number
+     * @param email customer email address
+     * @param card customer credit/debit card number
+     * @param ccExp customer card expiration date
+     * @param ccType customer credit card provider
+     * @param coupon customer coupon promo code
+     */
     private void createInvoice(Iterator cartIterator, String name,
                               String address,
                               String city, String state, String zip,
@@ -280,6 +302,13 @@ public class Checkout {
                 coupon);
     }
 
+    /**
+     * Adds labels and textfields to a GUI container for ease of formatting
+     * @param labels the JLabels to be added
+     * @param textFields the JTextFields to be added
+     * @param gridbag the gridbag layout to be used
+     * @param container the container to be used
+     */
     private void addLabelTextRows(JLabel[] labels,
                                   JTextField[] textFields,
                                   GridBagLayout gridbag,
@@ -304,6 +333,11 @@ public class Checkout {
         }
         
     }
+
+    /**
+     * Determines if all required text fields have been filled
+     * @return true if all required fields are filled, false otherwise
+     */
     private boolean validate() {
     	if(nameField.getText().length()==0 ||
                 addressField.getText().length()==0 ||
@@ -318,6 +352,10 @@ public class Checkout {
     	return true;
     }
 
+    /**
+     * Adds a ChangeListener
+     * @param listener the listener to be added
+     */
     public void addChangeListener(ChangeListener listener)
     {
         this.listener = listener;
