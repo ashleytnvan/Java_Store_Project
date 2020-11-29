@@ -108,7 +108,6 @@ public class StoreApp {
         //        (int)Math.round(Math.sqrt(items.size()))));
         itemDisplay.setLayout(new GridLayout(4,3));
         for(Item i: items) {
-            System.out.println(i.getItemName());
             i.setOpaque(true);
             JButton custom = new JButton(i.getPicture());
             JLabel label = new JLabel(i.getItemName());
