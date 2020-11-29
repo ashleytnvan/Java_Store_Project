@@ -47,12 +47,25 @@ public class StoreApp {
         Item lemon = new Item("lemon","lemon",1.89,1.50);
         Item orange = new Item("orange","orange",2.49,1.99);
         Item strawberry = new Item("strawberry","strawberry",1.75,1.50);
+        Item apple = new Item("apple","apple",2.25,1.25);
+        Item carrot = new Item("carrot","carrot",2.75,1.75);
+        Item watermelon = new Item("watermelon","watermelon",4.89,3.50);
+        Item avocado = new Item("avocado","avocado",2.15,1.79);
+        Item blueberry = new Item("blueberry","blueberry",3.49,2.99);
+        Item raspberry = new Item("raspberry","raspberry",3.29,2.50);
+        
         items.add(grape);
         items.add(banana);
         items.add(kiwi);
         items.add(lemon);
         items.add(orange);
         items.add(strawberry);
+        items.add(apple);
+        items.add(carrot);
+        items.add(watermelon);
+        items.add(avocado);
+        items.add(blueberry);
+        items.add(raspberry);
     }
 
     /**
