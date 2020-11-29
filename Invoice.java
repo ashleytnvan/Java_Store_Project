@@ -13,6 +13,8 @@ public class Invoice {
     private JTextArea invoiceArea;
     private JFrame frame;
     private Iterator cartIterator;
+    private double totalCost;
+    private String card;
 
     /**
      * Creates the frame for the Invoice
@@ -70,13 +72,22 @@ public class Invoice {
                                  String ccExp, String ccType, String coupon){
         String r = "               Invoice\n  ";
         r += "Thank you for shopping with us, " + name + "\n\n";
+        if (coupon.equals("milestone4")){
+            r += String.format("Discount applied!\n");
+        }
         r += "Items          Quantity          Cost\n";
         itemCartCost = 0;
         while(cartIterator.hasNext()){
             Map.Entry e = (Map.Entry)cartIterator.next();
             Item temp = (Item)e.getKey();
-            itemCartCost += temp.getPrice() * (int)e.getValue();
-            r += String.format("%-15s %-15d $%.2f\n", temp.getItemName(), (int)e.getValue(), temp.getPrice());
+            if (coupon.equals("milestone4")){
+                itemCartCost += temp.getDiscount() * (int)e.getValue();
+                r += String.format("%-15s %-15d $%.2f\n", temp.getItemName(), (int)e.getValue(), temp.getDiscount());
+            }
+            else {
+                itemCartCost += temp.getPrice() * (int) e.getValue();
+                r += String.format("%-15s %-15d $%.2f\n", temp.getItemName(), (int) e.getValue(), temp.getPrice());
+            }
         }
         r += "Total Cost: " + String.format("$%.2f\n",itemCartCost);
         double temp = itemCartCost * tax_rate;
@@ -92,7 +103,23 @@ public class Invoice {
         r += "Contact Information\n";
         r += phone + "\n";
         r += email + "\n";
-
+        totalCost = temp;
+        this.card = card;
         return r;
     }
+
+    /**
+     * Test: get total cost of the invoice.
+     */
+    public double getTotalCost(){
+        return totalCost;
+    }
+
+    /**
+     * Test: get the card number passed from Checkout.
+     */
+    public String getCardNumber(){
+        return card;
+    }
+
 }

@@ -104,9 +104,11 @@ public class StoreApp {
         header.add(exitButton);
         base.add(header, BorderLayout.NORTH);
         itemDisplay = new JPanel();
-        itemDisplay.setLayout(new GridLayout((int)Math.round(Math.sqrt(items.size())),
-                (int)Math.round(Math.sqrt(items.size()))));
+        //itemDisplay.setLayout(new GridLayout((int)Math.round(Math.sqrt(items.size())),
+        //        (int)Math.round(Math.sqrt(items.size()))));
+        itemDisplay.setLayout(new GridLayout(4,3));
         for(Item i: items) {
+            System.out.println(i.getItemName());
             i.setOpaque(true);
             JButton custom = new JButton(i.getPicture());
             JLabel label = new JLabel(i.getItemName());
@@ -124,20 +126,10 @@ public class StoreApp {
                 catch(InterruptedException exception){
                     exception.printStackTrace();
                 }
-                //                cart.addItem(i);
-//                cart.showItems();
             });
-            /*
-            i.addToCart.addActionListener(event -> {
-                int number = Integer.parseInt(i.quantity.getText());
-                for (int j = 0; j < number; j++)
-                    cart.addItem(i);
-            });
-            itemDisplay.add(i);
-             */
         }
         itemScroll = new JScrollPane(itemDisplay);
-        itemScroll.setPreferredSize(new Dimension(700,450) );
+        itemScroll.setPreferredSize(new Dimension(710,450) );
         base.add(itemScroll, BorderLayout.CENTER);
         frame = new JFrame("Store");
         frame.add(base);
@@ -174,4 +166,19 @@ public class StoreApp {
     {
         this.listener = listener;
     }
+
+    /**
+     * Test: see if store is showing or not, when it closes or opens.
+     */
+    public boolean storeShowing(){
+        return frame.isVisible();
+    }
+
+    /**
+     * Test: see if there are items in the store or not.
+     */
+    public boolean hasItems(){
+        return !items.isEmpty();
+    }
+
 }

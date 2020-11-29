@@ -324,7 +324,7 @@ public class ShoppingCart {
      * Returns the cart iterator
      * @return the cart iterator
      */
-    private Iterator checkoutCart(){
+    public Iterator checkoutCart(){
         Iterator cartIterator = shoppingCart.entrySet().iterator();
         return cartIterator;
     }
@@ -337,4 +337,12 @@ public class ShoppingCart {
     {
         this.listener = listener;
     }
+
+    /**
+     * Test: calculate total cost of the items in the shopping cart.
+     */
+    public double getTotalCost(){
+        return calculateTotalCost();
+    }
+
 }

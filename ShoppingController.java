@@ -343,4 +343,28 @@ public class ShoppingController {
     public void dispose(){
         System.exit(0);
     }
+
+    /**
+     * Testing: get valves count.
+     */
+    public int getValvesCount(){
+        return valves.size();
+    }
+
+    /**
+     * Testing: adding a cart.
+     */
+    public void createTestCarts(ShoppingCart s){
+        carts.add(s);
+        cart_index = size;
+        size++;
+    }
+
+    /**
+     * Testing: get count of shopping carts.
+     */
+    public int getShoppingCartsCount(){
+        return carts.size();
+    }
+
 }

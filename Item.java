@@ -34,54 +34,9 @@ public class Item extends JPanel {
         this.picture = picture;
         this.price = price;
         this.discounted_price = discounted_price;
-
         pictureLabel = new JLabel();
         updatePicture();
         add(pictureLabel, BorderLayout.CENTER);
-        /*
-        nameLabel = new JLabel(getItemName());
-
-        float total = (float)getPrice();
-
-        costLabel = new JLabel();
-        String s = Float.toString(total);
-        costLabel.setText(s);
-
-        float total2 = (float)getDiscount();
-        discountLabel = new JLabel();
-        String s2 = Float.toString(total2);
-        discountLabel.setText(s2);
-
-        add(nameLabel, BorderLayout.NORTH);
-
-        quantLabel = new JLabel("Quantity: ");
-        quantity = new JTextField("0");
-
-        plus = new JButton("+");
-        plus.addActionListener(event -> {
-            int quant = Integer.parseInt(quantity.getText());
-            quant++;
-            quantity.setText("" + quant);
-        });
-        minus = new JButton("-");
-        minus.addActionListener(event -> {
-            int quant = Integer.parseInt(quantity.getText());
-            if(quant > 0)
-                quant--;
-            quantity.setText("" + quant);
-        });
-        addToCart = new JButton("Add to Cart");
-
-        footer = new JPanel(new FlowLayout());
-        footer.add(costLabel);
-        footer.add(quantLabel);
-        footer.add(minus);
-        footer.add(quantity);
-        footer.add(plus);
-        footer.add(addToCart);
-        add(footer, BorderLayout.CENTER);
-
-         */
     }
 
     /**

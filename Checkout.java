@@ -48,6 +48,7 @@ public class Checkout {
     private JTextField cExpField;
     private JTextField couponField;
     private ChangeListener listener;
+    private int itemCount;
 
     /**
      * Constructs a Checkout panel that provides required information fields
@@ -250,6 +251,7 @@ public class Checkout {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        itemCount = 0;
     }
 
     /*
@@ -359,5 +361,16 @@ public class Checkout {
     public void addChangeListener(ChangeListener listener)
     {
         this.listener = listener;
+    }
+
+    /**
+     * Test: makes sure all items are passed into checkout.
+     */
+    public int getItemCount(){
+        while(cartIterator.hasNext()){
+            Map.Entry e = (Map.Entry)cartIterator.next();
+            itemCount++;
+        }
+        return itemCount;
     }
 }
