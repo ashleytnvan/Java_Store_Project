@@ -8,6 +8,9 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * StoreApp class has all the items and a link to shopping cart.
+ */
 public class StoreApp {
     private ArrayList<Item> items;
     private ShoppingCart cart;
@@ -53,7 +56,6 @@ public class StoreApp {
         Item avocado = new Item("avocado","avocado",2.15,1.79);
         Item blueberry = new Item("blueberry","blueberry",3.49,2.99);
         Item raspberry = new Item("raspberry","raspberry",3.29,2.50);
-        
         items.add(grape);
         items.add(banana);
         items.add(kiwi);
@@ -104,8 +106,6 @@ public class StoreApp {
         header.add(exitButton);
         base.add(header, BorderLayout.NORTH);
         itemDisplay = new JPanel();
-        //itemDisplay.setLayout(new GridLayout((int)Math.round(Math.sqrt(items.size())),
-        //        (int)Math.round(Math.sqrt(items.size()))));
         itemDisplay.setLayout(new GridLayout(4,3));
         for(Item i: items) {
             i.setOpaque(true);
@@ -136,6 +136,8 @@ public class StoreApp {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.repaint();
+        frame.revalidate();
     }
 
     /**
@@ -153,8 +155,27 @@ public class StoreApp {
     public void exit(){
         frame.setVisible(false);
         frame.dispose();
+        frame.revalidate();
+        frame.repaint();
         ChangeEvent changeEvent = new ChangeEvent(this);
         listener.stateChanged(changeEvent);
+    }
+
+    /**
+     * Closes the store window.
+     */
+    public void closeStore(){
+        frame.setVisible(false);
+        frame.dispose();
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    /**
+     * Sets the cart of the store.
+     */
+    public void setCart(ShoppingCart cart){
+        this.cart = cart;
     }
 
     /**
@@ -168,6 +189,7 @@ public class StoreApp {
 
     /**
      * Test: see if store is showing or not, when it closes or opens.
+     * @return frame.isVisible()
      */
     public boolean storeShowing(){
         return frame.isVisible();
@@ -175,6 +197,7 @@ public class StoreApp {
 
     /**
      * Test: see if there are items in the store or not.
+     * @return !items.isEmpty()
      */
     public boolean hasItems(){
         return !items.isEmpty();

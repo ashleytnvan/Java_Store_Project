@@ -3,24 +3,19 @@ package milestone4;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Item class has the properties of items such as picture,
+ * name, price, and discounted price. It uses ImageIcon.
+ */
 public class Item extends JPanel {
     private String item_name;
     private String picture;
     private double price;
     private double discounted_price;
-
-    JLabel pictureLabel;
-    JLabel costLabel;
-    JLabel discountLabel;
-    JLabel nameLabel;
-    /*
-    JLabel quantLabel;
-    JTextField quantity;
-    JButton plus;
-    JButton minus;
-    JButton addToCart;
-    JPanel footer;
-    */
+    private JLabel pictureLabel;
+    private JLabel costLabel;
+    private JLabel discountLabel;
+    private JLabel nameLabel;
 
     /**
      * Constructs the Item object with name, Icon, price and discounted price

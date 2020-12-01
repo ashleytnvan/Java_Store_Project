@@ -6,6 +6,10 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+/**
+ * Invoice class prints out the receipt with billing,
+ * shipping information, and contact information.
+ */
 public class Invoice {
     private ArrayList<Item> items;
     private double itemCartCost;
@@ -110,6 +114,7 @@ public class Invoice {
 
     /**
      * Test: get total cost of the invoice.
+     * @return totalCost the total cost.
      */
     public double getTotalCost(){
         return totalCost;
@@ -117,6 +122,7 @@ public class Invoice {
 
     /**
      * Test: get the card number passed from Checkout.
+     * @return card number the card number.
      */
     public String getCardNumber(){
         return card;

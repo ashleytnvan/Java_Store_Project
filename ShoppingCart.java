@@ -8,6 +8,10 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * ShoppingCart class has a shopping cart with item and item quantity.
+ * It displays a cart with the items in it and users can checkout.
+ */
 public class ShoppingCart {
     private HashMap<Item,Integer> shoppingCart;
     private JLabel label;

@@ -365,6 +365,7 @@ public class Checkout {
 
     /**
      * Test: makes sure all items are passed into checkout.
+     * @return itemCount - the count of items in the cart.
      */
     public int getItemCount(){
         while(cartIterator.hasNext()){
